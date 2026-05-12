@@ -63,5 +63,6 @@
 - `06-AUDITS` = verification and synchronization reports; read-only analytical outputs.
 
 ## 11. Auxiliary Workspace Clarification
-- `.codex` is an AI-assisted stabilization workspace.
-- `.codex` is non-authoritative and belongs to support tooling only.
+- `.codex` is an AI-assisted tooling workspace.
+- `.codex` is non-authoritative and outside of framework ontology discussion
+- `.codex` as a tooling infrastructure must stay outside ontology
