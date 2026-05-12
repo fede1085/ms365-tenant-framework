@@ -15,6 +15,17 @@ AUT → executes data
 
 The agent MUST respect this separation.
 
+## Execution State Gate (Mandatory)
+
+Allowed operational states:
+- `READ_ONLY` → inspect and validate only; no file generation, no file writes.
+- `PLAN` → propose structure and next actions; no file writes.
+- `GENERATE` → create/update blueprint and matrix artifacts only when explicitly requested.
+- `EXECUTE` → never performed by this workflow; execution is delegated to AUT scripts.
+
+Default state is `READ_ONLY` unless the user explicitly authorizes a higher state.
+If the task is audit, inspection, or semantic validation, state MUST remain `READ_ONLY`.
+
 ---
 
 ## Phase Control

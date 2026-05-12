@@ -43,3 +43,13 @@ Whenever a new Agent session begins, this router dictates the immediate loading 
 
 ## 3. Grounding Mandate
 An AI Agent must NEVER generate an output that violates the Context Loading Priority or pulls domain knowledge from outside the loaded context without explicit user consent.
+
+## 4. Execution State Safety Gate
+
+Router behavior MUST respect explicit execution states:
+- `READ_ONLY`: inspection/validation only; no generation and no execution actions.
+- `PLAN`: planning/analysis only; no file writes.
+- `GENERATE`: controlled artifact generation only when explicitly requested.
+- `EXECUTE`: reserved for AUT layer operations.
+
+If user intent is audit, inspection, or semantic validation, enforce `READ_ONLY`.

@@ -35,7 +35,7 @@ CAT-SUB-001 — Human Readable Name
 
 Example:
 
-BLP-TMP-007 — Naming Convention Standard
+ARC-STD-007 — Naming Convention Standard
 
 Meaning:
 
@@ -80,7 +80,7 @@ Examples:
 
 - PRF-PER-001 — Personal Finance Rule
 - PRF-PRO-001 — Professional Profile Rule
-- ARC-NAM-001 — Naming Convention Standard
+- ARC-STD-007 — Naming Convention Standard
 - M365-SPT-001 — SharePoint Structure Guide
 
 ---
@@ -101,11 +101,11 @@ Use long dash `—` between the technical code and readable title.
 
 Good:
 
-BLP-TMP-007 — Naming Convention Standard
+ARC-STD-007 — Naming Convention Standard
 
 Bad:
 
-BLP-TMP-007 - Naming Convention Standard
+ARC-STD-007 — Naming Convention Standard
 
 ---
 
@@ -325,6 +325,6 @@ System logic → Human clarity
 
 Example:
 
-ARC-NAM-001 — Naming Convention Standard
+ARC-STD-007 — Naming Convention Standard
 
 This is the preferred naming model.

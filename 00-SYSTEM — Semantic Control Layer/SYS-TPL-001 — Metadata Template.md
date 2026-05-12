@@ -19,7 +19,7 @@ authority_level:
 ## Usage Instructions
 1. Copy the YAML block at the top of this file.
 2. Paste it at the very beginning of the new markdown file.
-3. Fill in the values using canonical references (e.g., `@ARC-NAM-001` for `depends_on`).
+3. Fill in the values using canonical references (e.g., `@ARC-STD-007` for `depends_on`).
 
 ## Field Definitions
 - **id:** The unique file identifier (e.g., @BLP-TMP-005).

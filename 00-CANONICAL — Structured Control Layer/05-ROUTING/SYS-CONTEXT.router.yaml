@@ -5,6 +5,12 @@
 id: "router:sys-context:v1"
 type: "ContextRouter"
 schema_ref: "SYS-ROUTING.schema.yaml"
+execution_states:
+  default: "READ_ONLY"
+  allowed: ["READ_ONLY", "PLAN", "GENERATE", "EXECUTE"]
+  audit_enforcement:
+    enforce_state: "READ_ONLY"
+    allow_writes: false
 routes:
   - task: "Define Framework Rules"
     workflow_stage: "Architecture"
