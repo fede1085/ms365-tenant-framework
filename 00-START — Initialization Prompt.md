@@ -254,11 +254,10 @@ Create:
 
 ```text
 02-INSTANCES — Projects\[project_name]\
-
-   ├── 01-DISCOVERY
-   ├── 02-BLP
-   ├── 03-MTX
-   └── 04-AUT
+    ├── 01-DISCOVERY — Discovery
+    ├── 02-BLP — Blueprint Templates
+    ├── 03-MTX — Data Matrices
+    └── 04-AUT — Automation Executables
 ```
 
 Do NOT generate framework architecture folders inside tenant instances.
@@ -446,7 +445,7 @@ ONLY after Blueprint validation approval.
 Generate execution-ready CSV files inside:
 
 ```text
-02-INSTANCES — Projects\[project_name]\03-MTX
+02-INSTANCES — Projects\[project_name]\03-MTX — Data Matrices
 ```
 
 Required files:

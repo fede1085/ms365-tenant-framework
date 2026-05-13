@@ -97,15 +97,15 @@ Rules:
 
 02-INSTANCES
 └── CLIENT-NAME
-    ├── 01-DISCOVERY
-    ├── 02-BLP
+    ├── 01-DISCOVERY — Discovery
+    ├── 02-BLP — Blueprint Templates
     │   ├── PRJ-BLUEPRINT-MASTER-DOC.md
     │   ├── BLP-OPS-001.md
     │   ├── BLP-GOV-001.md
     │   ├── BLP-SEC-001.md
     │   └── ...
-    ├── 03-MTX
-    └── 04-AUT
+    ├── 03-MTX — Data Matrices
+    └── 04-AUT — Automation Executables
 
 ---
 

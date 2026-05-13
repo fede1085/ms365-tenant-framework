@@ -36,10 +36,6 @@ MS365-TENANT — Framework Setup
 │
 ├── 00-CANONICAL — Structured Control Layer
 │   │
-│   ├── LEGACY-PRJ-ARC-001 — Personal Project Architecture.md
-│   ├── LEGACY-PRJ-LVL-001 — Tenant Project Levels Blueprint.md
-│   ├── LEGACY-PRJ-LVL-002 — Tenant Project Levels Index.md
-│   │
 │   ├── SYS-AGT-001 — Agent Map.md
 │   ├── SYS-ENT-001 — Entity Map.md
 │   ├── SYS-FRWK-999 — Structure Guide.txt
@@ -189,6 +185,14 @@ MS365-TENANT — Framework Setup
 │
 ├── 02-INSTANCES — Projects [ignore]
 │
+├── 099-DOCS — Research Files
+│   │
+│   └── SAMPLE-MTX
+│       │
+│       ├── MTX-GROUPS.sample.csv
+│       ├── MTX-PERMISSIONS.sample.csv
+│       └── MTX-USERS.sample.csv
+│
 ├── .codex
 │   └── environments
 │       └── environment.toml
@@ -199,4 +203,6 @@ MS365-TENANT — Framework Setup
 ├── 01-GENERATION — Blueprint Generation Prompt.md
 ├── 02-VALIDATION — Blueprint Validation Prompt.md
 │
-└── README.md
+├── README.md
+│
+└── sitemap.txt

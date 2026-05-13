@@ -96,10 +96,10 @@ Expected project structure:
 
 ```text
 /02-INSTANCES — Projects/[project_name]/
-   ├── 01-DISCOVERY/
-   ├── 02-BLP/
-   ├── 03-MTX/
-   └── 04-AUT/
+    ├── 01-DISCOVERY — Discovery
+    ├── 02-BLP — Blueprint Templates
+    ├── 03-MTX — Data Matrices
+    └── 04-AUT — Automation Executables
 ```
 
 ---
@@ -134,7 +134,7 @@ Automation must only begin after:
 Before deployment, review Matrix files inside:
 
 ```text
-/02-INSTANCES — Projects/[project_name]/03-MTX/
+/02-INSTANCES — Projects/[project_name]/03-MTX — Data Matrices/
 ```
 
 Required files:
@@ -333,7 +333,7 @@ AI generates tenant BLP
 - Do NOT run Deploy-Tenant directly.
 - Do NOT modify framework files.
 - Do NOT generate tenant data inside framework folders.
-- All execution data comes from tenant `/03-MTX/`.
+- All execution data comes from tenant `/03-MTX — Data Matrices/`.
 - AUT must never redefine ARCH or BLP.
 
 ---
