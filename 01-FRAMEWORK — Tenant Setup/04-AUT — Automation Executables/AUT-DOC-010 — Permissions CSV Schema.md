@@ -1,10 +1,9 @@
-# AUT-DOC-010 — permissions.csv Schema
+# AUT-DOC-010 — MTX-PERMISSIONS.csv Schema
 
 ## Reusable Tenant Automation Layer
 
-**Legacy compatible naming:**
-- users.csv → MTX-USERS.csv
-- permissions.csv → MTX-PERMISSIONS.csv
+**Legacy compatibility note:**
+- permissions.csv is a legacy reference for MTX-PERMISSIONS.csv
 
 ---
 
@@ -36,7 +35,7 @@ This file becomes the source of truth for:
 # 2. File Name
 
 ```
-permissions.csv
+MTX-PERMISSIONS.csv
 ```
 
 ---

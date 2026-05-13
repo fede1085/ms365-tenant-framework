@@ -16,9 +16,9 @@ Automation must never redefine architecture, blueprint logic, semantic governanc
 
 ---
 
-## 2. Execution State Model
+## 2. Orchestration Mode Model
 
-Automation follows this controlled execution model:
+Automation follows this controlled orchestration mode model:
 
 ```text
 READ_ONLY
@@ -40,6 +40,8 @@ EXECUTE
 ```
 
 The system must never execute automatically.
+
+AUT runtime object states such as PENDING, WAITING_PROPAGATION, READY, FAILED, and COMPLETED are defined separately in AUT-SYS-001.
 
 ---
 

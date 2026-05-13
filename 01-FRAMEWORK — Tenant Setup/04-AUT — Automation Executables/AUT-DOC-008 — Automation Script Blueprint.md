@@ -180,10 +180,10 @@ MTX-LICENSES.csv
 
 ---
 
-# 8. Example users.csv
+# 8. Example MTX-USERS.csv
 
 ```
-DisplayName,UPN,Department,Role,License
+DisplayName,UserPrincipalName,Department,Role,License
 ROLE-OPS-LEAD,user@<domain>,Operations,Agent,Basic
 ROLE-FIN-ANALYST,user@<domain>,Finance,Analyst,Basic
 ```
@@ -220,6 +220,8 @@ Automation runtime behavior should follow:
 - VALIDATING
 - READY
 - CREATING
+- UPDATING
+- SKIPPED
 - WAITING_PROPAGATION
 - VALIDATING_RESULT
 - COMPLETED
@@ -297,8 +299,8 @@ how to create it
 # 14. Next Recommended Documents
 
 ```
-AUT-DOC-009 — users.csv schema
-AUT-DOC-010 — permissions.csv schema
+AUT-DOC-009 — MTX-USERS.csv schema
+AUT-DOC-010 — MTX-PERMISSIONS.csv schema
 AUT-DOC-011 — Full Tenant Build Script
 AUT-DOC-012 — Validation & Audit Toolkit
 ```

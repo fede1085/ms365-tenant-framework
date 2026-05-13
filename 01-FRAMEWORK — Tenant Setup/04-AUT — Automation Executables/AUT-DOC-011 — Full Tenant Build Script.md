@@ -9,6 +9,8 @@
 - permissions.csv → MTX-PERMISSIONS.csv
 - licenses.csv → MTX-LICENSES.csv
 
+Legacy names are references only. Active runtime input names use the MTX-* filenames below.
+
 Preferred MTX naming:
 
 - MTX-USERS.csv
@@ -50,6 +52,14 @@ MTX-MAILBOXES.csv
 MTX-PERMISSIONS.csv
 MTX-LICENSES.csv
 ```
+
+License runtime execution status:
+
+```text
+License runtime execution not yet implemented.
+```
+
+Current scripts load `MTX-LICENSES.csv` to prevent input ambiguity, but do not assign licenses yet.
 
 Optional:
 
@@ -130,7 +140,10 @@ Write-Host "Starting Tenant Build..."
 
 # Import Data
 $Users       = Import-Csv .\MTX-USERS.csv
+$Licenses    = Import-Csv .\MTX-LICENSES.csv
 $Permissions = Import-Csv .\MTX-PERMISSIONS.csv
+
+# License runtime execution not yet implemented.
 
 # Step 1 Users
 foreach ($u in $Users) {

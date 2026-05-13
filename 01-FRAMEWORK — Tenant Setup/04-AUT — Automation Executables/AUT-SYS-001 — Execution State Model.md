@@ -2,6 +2,8 @@
 
 ## Reusable Tenant Automation Layer
 
+This document defines AUT runtime object states. Orchestration modes such as READ_ONLY, PLAN, GENERATE, and EXECUTE are defined by the execution workflow.
+
 ---
 
 # 1. Purpose
@@ -341,7 +343,7 @@ No changes were applied.
 
 AUT execution remains human-supervised.
 
-The system must never move into EXECUTE automatically.
+The orchestration mode must never move into EXECUTE automatically.
 
 Execution requires explicit approval and tenant confirmation.
 

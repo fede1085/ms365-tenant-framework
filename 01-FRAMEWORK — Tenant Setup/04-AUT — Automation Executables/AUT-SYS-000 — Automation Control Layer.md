@@ -28,6 +28,8 @@ The automation scripts require the following Matrix files for execution:
 - `MTX-PERMISSIONS.csv`
 - `MTX-LICENSES.csv`
 
+`MTX-LICENSES.csv` is required as an input contract. License runtime execution is not yet implemented.
+
 # 4. Execution Rules
 
 ## 4.1 Dry-run first rule

@@ -22,7 +22,7 @@ Define the control toolkit used after tenant deployment.
 
 Goal:
 
-Validate that the tenant matches the blueprint.
+Validate that the tenant matches MTX intent.
 
 This document is the operational audit layer.
 
@@ -343,7 +343,7 @@ audit-naming.ps1
 
 # 13. Final Concept
 
-Blueprint defines target state.  
+MTX defines runtime target state.
 
 Audit toolkit verifies reality.
 

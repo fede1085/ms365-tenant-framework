@@ -1,10 +1,9 @@
-# AUT-DOC-009 — users.csv Schema
+# AUT-DOC-009 — MTX-USERS.csv Schema
 
 ## Reusable Tenant Automation Layer
 
-**Legacy compatible naming:**
-- users.csv → MTX-USERS.csv
-- permissions.csv → MTX-PERMISSIONS.csv
+**Legacy compatibility note:**
+- users.csv is a legacy reference for MTX-USERS.csv
 
 ---
 
@@ -38,7 +37,7 @@ This file becomes the source of truth for:
 # 2. File Name
 
 ```
-users.csv
+MTX-USERS.csv
 ```
 
 ---
@@ -200,7 +199,7 @@ Before import:
 # 12. PowerShell Consumption Example
 
 ```powershell
-$users = Import-Csv .\users.csv
+$users = Import-Csv .\MTX-USERS.csv
 foreach ($u in $users) {
     # create user logic
 }
@@ -223,7 +222,7 @@ who exists in the company
 # 14. Next Document
 
 ```
-AUT-DOC-010 — permissions.csv Schema
+AUT-DOC-010 — MTX-PERMISSIONS.csv Schema
 ```
 
 ---

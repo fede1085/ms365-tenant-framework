@@ -67,12 +67,14 @@ $UsersFile       = Join-Path $ProjectPath "MTX-USERS.csv"
 $GroupsFile      = Join-Path $ProjectPath "MTX-GROUPS.csv"
 $MailboxesFile   = Join-Path $ProjectPath "MTX-MAILBOXES.csv"
 $PermissionsFile = Join-Path $ProjectPath "MTX-PERMISSIONS.csv"
+$LicensesFile    = Join-Path $ProjectPath "MTX-LICENSES.csv"
 
 $files = @(
     $UsersFile,
     $GroupsFile,
     $MailboxesFile,
-    $PermissionsFile
+    $PermissionsFile,
+    $LicensesFile
 )
 
 foreach ($f in $files) {
@@ -86,6 +88,7 @@ $Users       = Import-Csv $UsersFile
 $Groups      = Import-Csv $GroupsFile
 $Mailboxes   = Import-Csv $MailboxesFile
 $Permissions = Import-Csv $PermissionsFile
+$Licenses    = Import-Csv $LicensesFile
 
 # -----------------------------
 # CONNECT (ONLY EXECUTE)
@@ -127,7 +130,15 @@ Write-Host "`n--- USERS ---"
 
 foreach ($u in $Users) {
 
-    $msg = "$($u.UPN)"
+    $userPrincipalName = $u.UserPrincipalName
+    $mailNickname = if ($u.MailNickname) {
+        $u.MailNickname
+    }
+    else {
+        $userPrincipalName.Split("@")[0]
+    }
+
+    $msg = "$userPrincipalName"
 
     if (-not $Execute) {
         Write-Host "[DRY] Create user $msg"
@@ -137,7 +148,7 @@ foreach ($u in $Users) {
     try {
 
         $ExistingUser = Get-MgUser `
-            -Filter "userPrincipalName eq '$($u.UPN)'"
+            -Filter "userPrincipalName eq '$userPrincipalName'"
 
         if ($ExistingUser) {
             Write-Host "[SKIP] User already exists $msg"
@@ -146,8 +157,8 @@ foreach ($u in $Users) {
 
         New-MgUser `
             -DisplayName $u.DisplayName `
-            -UserPrincipalName $u.UPN `
-            -MailNickname ($u.UPN.Split("@")[0]) `
+            -UserPrincipalName $userPrincipalName `
+            -MailNickname $mailNickname `
             -AccountEnabled $true `
             -PasswordProfile @{
                 Password = (New-RandomTenantPassword)
@@ -161,6 +172,14 @@ foreach ($u in $Users) {
         Write-Host $_
     }
 }
+
+# -----------------------------
+# LICENSES
+# -----------------------------
+
+Write-Host "`n--- LICENSES ---"
+Write-Host "[INFO] License runtime execution not yet implemented. MTX-LICENSES.csv loaded for future extension."
+Write-Host "[INFO] License rows detected:" $Licenses.Count
 
 # -----------------------------
 # GROUPS
@@ -234,6 +253,8 @@ foreach ($m in $Mailboxes) {
             -PrimarySmtpAddress $m.Mailbox
 
         Write-Host "[OK] Mailbox $msg"
+        Write-Host "[WAIT] Allowing basic mailbox propagation stabilization for $msg"
+        Start-Sleep -Seconds 30
     }
     catch {
         Write-Host "[ERR] Mailbox $msg"
@@ -249,37 +270,75 @@ Write-Host "`n--- PERMISSIONS ---"
 
 foreach ($p in $Permissions) {
 
-    $mbx = $p.Mailbox
+    if ($p.Enabled -and $p.Enabled.ToString().ToLowerInvariant() -eq "false") {
+        Write-Host "[SKIP] Disabled permission row $($p.PermissionID)"
+        continue
+    }
+
+    $mbx = $p.TargetAddress
+    $trustee = $p.UserUPN
+    $accessType = $p.AccessType
 
     if (-not $Execute) {
-        Write-Host "[DRY] Permissions on $mbx"
+        Write-Host "[DRY] $accessType permission for $trustee on $mbx"
         continue
     }
 
     try {
 
-        if ($p.FullAccess) {
+        if ($accessType -eq "FullAccess") {
+
+            $ExistingPermission = Get-MailboxPermission `
+                -Identity $mbx `
+                -User $trustee `
+                -ErrorAction SilentlyContinue |
+                Where-Object {
+                    $_.AccessRights -contains "FullAccess" -and
+                    -not $_.IsInherited
+                }
+
+            if ($ExistingPermission) {
+                Write-Host "[SKIP] FullAccess already exists for $trustee on $mbx"
+                continue
+            }
 
             Add-MailboxPermission `
                 -Identity $mbx `
-                -User $p.FullAccess `
+                -User $trustee `
                 -AccessRights FullAccess `
                 -Confirm:$false
         }
 
-        if ($p.SendAs) {
+        elseif ($accessType -eq "SendAs") {
+
+            $ExistingPermission = Get-RecipientPermission `
+                -Identity $mbx `
+                -Trustee $trustee `
+                -ErrorAction SilentlyContinue |
+                Where-Object {
+                    $_.AccessRights -contains "SendAs"
+                }
+
+            if ($ExistingPermission) {
+                Write-Host "[SKIP] SendAs already exists for $trustee on $mbx"
+                continue
+            }
 
             Add-RecipientPermission `
                 -Identity $mbx `
-                -Trustee $p.SendAs `
+                -Trustee $trustee `
                 -AccessRights SendAs `
                 -Confirm:$false
         }
+        else {
+            Write-Host "[WARN] Unsupported permission AccessType $accessType for $trustee on $mbx"
+            continue
+        }
 
-        Write-Host "[OK] Permissions $mbx"
+        Write-Host "[OK] $accessType permission for $trustee on $mbx"
     }
     catch {
-        Write-Host "[ERR] Permissions $mbx"
+        Write-Host "[ERR] $accessType permission for $trustee on $mbx"
         Write-Host $_
     }
 }

@@ -13,10 +13,10 @@ param(
 $BasePath = "..\..\..\02-INSTANCES — Projects"
 
 # -----------------------------
-# EXECUTION STATE
+# ORCHESTRATION MODE
 # -----------------------------
 
-$ExecutionState = if ($Execute) {
+$OrchestrationMode = if ($Execute) {
     "EXECUTE"
 }
 else {
@@ -40,7 +40,7 @@ else {
 
 Write-Host "=== PROJECT DEPLOY RUNNER ==="
 Write-Host ""
-Write-Host "Execution State :" $ExecutionState
+Write-Host "Orchestration Mode:" $OrchestrationMode
 Write-Host "Working directory:" (Get-Location)
 
 Write-Host "Expected base path root:" `
@@ -94,7 +94,8 @@ $requiredFiles = @(
     "MTX-USERS.csv",
     "MTX-GROUPS.csv",
     "MTX-MAILBOXES.csv",
-    "MTX-PERMISSIONS.csv"
+    "MTX-PERMISSIONS.csv",
+    "MTX-LICENSES.csv"
 )
 
 foreach ($file in $requiredFiles) {
@@ -143,6 +144,12 @@ Write-Host ""
 if (-not $Execute) {
 
     Write-Host "[READ_ONLY / DRY-RUN MODE]"
+
+    .\Deploy-Tenant.ps1 `
+        -ProjectPath $mtxPath `
+        -TenantId $TenantId `
+        -TenantDomain $TenantDomain `
+        -EnvironmentName $EnvironmentName
 
     $confirm = Read-Host `
         "Type YES to continue into EXECUTE mode"
