@@ -1,17 +1,7 @@
-# Ignore tenant instances
-#02-INSTANCES — Projects/*
+#2-INSTANCES — Projects/
+#03-MTX — Data Matrices/
 
-# Allow AMB project root
-!02-INSTANCES — Projects/AMB-Logistics/
-
-# Ignore all inside AMB
-02-INSTANCES — Projects/AMB-Logistics/*
-
-# Allow only AUT
-!02-INSTANCES — Projects/AMB-Logistics/04-AUT — Automation Executables/
-
-# Allow LAB
-!02-INSTANCES — Projects/AMB-Logistics/04-AUT — Automation Executables/01-LAB — Automation Lab/
-
-# Allow LAB contents
-!02-INSTANCES — Projects/AMB-Logistics/04-AUT — Automation Executables/01-LAB — Automation Lab/**
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

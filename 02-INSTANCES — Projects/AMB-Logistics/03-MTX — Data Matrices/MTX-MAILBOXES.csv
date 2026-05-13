@@ -1,0 +1,9 @@
+MailboxID,DisplayName,Alias,UPN,Department,OwnerID,Purpose
+MBX-001,MBX - MGMT - Info,info,info@amblogistics.be,MGMT,U001,General external inquiries.
+MBX-002,MBX - OPS - Operations,operations,operations@amblogistics.be,OPS,U002,Transport bookings and international tracking.
+MBX-003,MBX - DSP - Dispatch,dispatch,dispatch@amblogistics.be,DSP,U006,Driver communications and daily coordination.
+MBX-004,MBX - SUP - Support,support,support@amblogistics.be,SUP,U009,Client issue tickets and resolution.
+MBX-005,MBX - FIN - Finance,finance,finance@amblogistics.be,FIN,U003,Invoicing, payments, and payroll.
+MBX-006,MBX - HR - Human Resources,hr,hr@amblogistics.be,HR,U004,Recruitment and staff queries.
+MBX-007,MBX - SAL - Sales,sales,sales@amblogistics.be,SAL,U008,Quotes and sales leads.
+MBX-008,MBX - IT - Tech Support,it,it@amblogistics.be,IT,U007,Internal support and technical governance.
