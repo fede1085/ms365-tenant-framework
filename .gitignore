@@ -1,5 +1,5 @@
 # Ignore tenant instances
-02-INSTANCES — Projects/*
+#02-INSTANCES — Projects/*
 
 # Allow AMB project root
 !02-INSTANCES — Projects/AMB-Logistics/
