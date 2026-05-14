@@ -1,0 +1,21 @@
+id: "@SYS-STD-003"
+title: "Maturity Level Vocabulary"
+layer: "SYS"
+type: "Standard"
+status: "Active"
+authority_level: 1
+depends_on:
+  - "@SYS-STD-001"
+  - "@SYS-STD-002"
+  - "@SYS-MAP-000"
+  - "@ARC-STR-002"
+terms:
+  - id: "MaturityLevel"
+    definition: "Semantic scope filter; not a framework layer."
+  - id: "SMB Basic"
+    definition: "Baseline scope for small business tenant generation and basic Microsoft 365 study."
+  - id: "SME Governance"
+    definition: "Governance-oriented scope for small and medium organizations."
+  - id: "Enterprise Thinking"
+    definition: "Advanced study and architecture-thinking scope; not a default execution baseline."
+relationship_chain: "MaturityLevel -> Scope decision -> ARCH applicability -> BLP template selection -> MTX matrix scope -> AUT readiness boundary"

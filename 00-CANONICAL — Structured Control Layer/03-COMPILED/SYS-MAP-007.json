@@ -1,0 +1,22 @@
+{
+  "id": "@SYS-MAP-007",
+  "title": "Extension Dependency Map",
+  "layer": "SYS",
+  "type": "Dependency Map",
+  "status": "Active",
+  "authority_level": 1,
+  "depends_on": ["@SYS-MAP-002", "@SYS-MAP-005", "@SYS-ENT-002", "@CAN-GRP-001", "@CAN-GRP-002"],
+  "chains": {
+    "collaboration": "Tenant -> Department -> Group -> Team -> Channel/SharePointSite -> Library",
+    "governance": "Resource -> Owner -> Reviewer -> AccessReview -> Decision -> Remediation",
+    "security_policy": "User/Group/AdminRoleAssignment/GuestUser -> ConditionalAccessPolicy -> Access Decision",
+    "information_protection": "SharePointSite -> Library -> SensitivityLabel -> RetentionPolicy",
+    "sector_strategy": "SectorTemplate -> Department defaults -> Role defaults -> Workflow defaults -> Blueprint guidance",
+    "maturity_strategy": "MaturityLevel -> Allowed module depth -> Blueprint scope -> Matrix scope -> Automation readiness"
+  },
+  "rules": [
+    "Extension dependencies must preserve SYS/CAN -> ARCH -> BLP -> MTX -> AUT.",
+    "Extensions must not create independent execution paths.",
+    "Extensions must remain acyclic and downward."
+  ]
+}
