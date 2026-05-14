@@ -1,0 +1,5 @@
+"ReviewScope","ObjectType","ObjectName","ReviewOwner","ReviewCadence","GuestReview","LastReviewDate"
+"Departmental Teams","Team","TEAM-OPS","role:operations.lead","Quarterly","No","<YYYY-MM-DD>"
+"Transversal Collaboration","Team","TEAM-COORDINATION","role:operations.manager","Quarterly","No","<YYYY-MM-DD>"
+"Client Project Guest Access","Team","TEAM-CLIENT-PROJECT","role:project.owner","Monthly","Yes","<YYYY-MM-DD>"
+"Sensitive Project Library","Library","LIB-CLIENT-DOCS","role:project.owner","Monthly","Yes","<YYYY-MM-DD>"
