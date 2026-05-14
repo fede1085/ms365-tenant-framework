@@ -28,6 +28,7 @@ The scripts follow the execution model:
 | `LAB-Create-Mailboxes.ps1` | Logic for Shared Mailboxes in EXO. |
 | `LAB-Apply-Permissions.ps1` | Logic for Group/Mailbox permission mapping. |
 | `LAB-Validation-Report.ps1` | Post-execution audit and verification. |
+| `LAB-Protected-Objects.ps1` | Tenant-local protected object safety policy. |
 
 ## 4. Usage Rules
 - **DRY-RUN First**: All scripts support a `-DryRun` switch. Use it first.
@@ -36,6 +37,25 @@ The scripts follow the execution model:
 - **No Delete**: No destructive operations are included by design.
 - **Validation First**: CSV structure and relationships must validate before tenant-facing execution.
 - **No Fake Success**: LAB planning output is not tenant deployment success; live state still requires validation.
+
+## 5. Protected Object Safety
+
+```text
+LAB / EXPERIMENTAL / NON-CANONICAL
+Semi-controlled execution supported
+Not production-grade
+No license assignment
+Protected-object guarded
+```
+
+- LAB runtime protects tenant owner / Global Admin identities from automation mutation.
+- `GLOBAL-Admin` is protected by UPN, alias, display name, role, and ObjectId if known.
+- Current protected UPN: `homelab@federicomosqueira0910.onmicrosoft.com`.
+- Current protected aliases: `global.admin@federicomosqueira.site`, `hello@federicomosqueira.site`.
+- Execution is blocked if `LAB-Protected-Objects.ps1` is missing or cannot load.
+- Licenses remain skipped; no license assignment is implemented.
+- Reset mode must never delete protected objects.
+- DryRun is still the first required execution mode.
 
 ---
 **Experimental Layer — Use with Caution**

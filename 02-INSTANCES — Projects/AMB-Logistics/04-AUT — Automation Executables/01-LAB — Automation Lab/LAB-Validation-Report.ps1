@@ -16,7 +16,17 @@ if (-not $PSBoundParameters.ContainsKey("DryRun")) {
     $DryRun = $true
 }
 
-$ScriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProtectedObjectsPath = Join-Path $ScriptRoot "LAB-Protected-Objects.ps1"
+if (-not (Test-Path -LiteralPath $ProtectedObjectsPath)) {
+    throw "Protected object policy file missing. Execution blocked."
+}
+. $ProtectedObjectsPath
+if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+    throw "GLOBAL-Admin protected identity is not registered. Execution blocked."
+}
+$ProtectedSummary = Get-LabProtectedObjectSummary
+$ScriptDir = $ScriptRoot
 $ReportsDir = Join-Path $ScriptDir "reports"
 $LogsDir = Join-Path $ScriptDir "logs"
 $TranscriptsDir = Join-Path $ScriptDir "transcripts"
@@ -39,6 +49,7 @@ $AllowedStates = @(
     "CREATING",
     "UPDATING",
     "SKIPPED",
+    "SKIPPED_PROTECTED",
     "WAITING_PROPAGATION",
     "VALIDATING_RESULT",
     "COMPLETED",
@@ -94,7 +105,7 @@ function Add-ValidationRecord {
 
     $Color = "White"
     if ($Status -in @("FAILED", "BLOCKED", "ROLLBACK_REQUIRED")) { $Color = "Red" }
-    elseif ($Status -in @("WARNING", "WAITING_PROPAGATION")) { $Color = "Yellow" }
+    elseif ($Status -in @("WARNING", "WAITING_PROPAGATION", "SKIPPED_PROTECTED")) { $Color = "Yellow" }
     elseif ($Status -in @("VALIDATING_RESULT", "READY")) { $Color = "Cyan" }
     elseif ($Status -eq "COMPLETED") { $Color = "Green" }
     Write-Host "[$Status] $Scope - $Message" -ForegroundColor $Color
@@ -207,6 +218,34 @@ try {
     Write-Host "`n============================================================" -ForegroundColor Cyan
     Write-Host "LAB VALIDATION REPORT - AMB LOGISTICS" -ForegroundColor Cyan
     Write-Host "============================================================" -ForegroundColor Cyan
+
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "LAB-Protected-Objects.ps1 exists and was imported fail-closed." -Reference $ProtectedObjectsPath
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected UPN is present: $($ProtectedSummary.ProtectedUPNs -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected aliases are present: $($ProtectedSummary.ProtectedAliases -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected display name is present: $($ProtectedSummary.ProtectedDisplayNames -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "SKIPPED_PROTECTED is supported by LAB validation states." -Reference "AUT-SYS-001"
+
+    if ($ProtectedSummary.ProtectedObjectIds -contains "<UNKNOWN_OBJECT_ID_GLOBAL_ADMIN>") {
+        Add-ValidationRecord -Status "WARNING" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin ObjectId is still unknown; placeholder is present." -Reference "LAB-Protected-Objects.ps1"
+    }
+
+    foreach ($ScriptName in @("LAB-Run-Project.ps1", "LAB-Deploy-Tenant.ps1", "LAB-Create-Users.ps1", "LAB-Create-Groups.ps1", "LAB-Create-Mailboxes.ps1", "LAB-Apply-Permissions.ps1", "LAB-Validation-Report.ps1")) {
+        $ScriptPath = Join-Path $ScriptDir $ScriptName
+        $ScriptText = Get-Content -LiteralPath $ScriptPath -Raw
+        if ($ScriptText -match "LAB-Protected-Objects\.ps1" -and $ScriptText -match "Execution blocked") {
+            Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope $ScriptName -Message "Imports protected-object policy and fails closed if missing." -Reference $ScriptName
+        } else {
+            Add-ValidationRecord -Status "BLOCKED" -Scope $ScriptName -Message "Protected-object policy import or fail-closed guard is missing." -Reference $ScriptName
+        }
+
+        if ($ScriptName -in @("LAB-Create-Users.ps1", "LAB-Create-Groups.ps1", "LAB-Create-Mailboxes.ps1", "LAB-Apply-Permissions.ps1")) {
+            if ($ScriptText -match "Assert-LabNotProtectedObject") {
+                Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope $ScriptName -Message "Protected-object checks are present before write actions." -Reference $ScriptName
+            } else {
+                Add-ValidationRecord -Status "BLOCKED" -Scope $ScriptName -Message "Protected-object checks before write actions are missing." -Reference $ScriptName
+            }
+        }
+    }
 
     $MatrixSchemas = @{
         "MTX-USERS.csv"       = @("UserID", "DisplayName", "FirstName", "LastName", "UserPrincipalName", "MailNickname", "Department", "JobTitle", "UsageLocation", "LicenseSKU", "PasswordProfile", "AccountEnabled")

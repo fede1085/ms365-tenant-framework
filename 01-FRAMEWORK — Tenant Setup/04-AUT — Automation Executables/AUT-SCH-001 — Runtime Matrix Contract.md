@@ -321,6 +321,20 @@ AUT execution must:
 * support dry-run behavior
 * avoid destructive defaults
 
+## Runtime Protected Object Rule
+
+Runtime MTX data must never override protected-object controls.
+
+Even if a protected object appears in MTX-USERS, MTX-GROUPS, MTX-MAILBOXES, MTX-PERMISSIONS, or MTX-LICENSES, AUT must validate protected-object rules before executing writes.
+
+Protected object checks have higher priority than MTX desired state.
+
+If MTX requests mutation of a protected object:
+
+* return SKIPPED_PROTECTED or BLOCKED
+* log the conflict
+* do not mutate the object
+
 AUT execution must NOT:
 
 * infer missing runtime identifiers

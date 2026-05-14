@@ -130,6 +130,14 @@ SKIPPED is acceptable only when the existing object matches expected MTX intent.
 
 The object matched protected-object rules and was intentionally not modified.
 
+SKIPPED_PROTECTED is a safe terminal state.
+
+It applies when an object is protected and no mutation is allowed.
+
+It must not be treated as FAILED.
+
+It must remain distinguishable from normal SKIPPED.
+
 SKIPPED_PROTECTED must be logged with the protected-object reason.
 
 ---
@@ -229,6 +237,8 @@ Protected transition:
 PENDING
 → VALIDATING
 → SKIPPED_PROTECTED or BLOCKED
+
+SKIPPED_PROTECTED is terminal unless a separately documented emergency override workflow exists.
 
 Failure transition:
 

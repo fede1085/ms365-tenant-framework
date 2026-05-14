@@ -14,6 +14,17 @@ Param(
     [String]$TenantDomain
 )
 
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProtectedObjectsPath = Join-Path $ScriptRoot "LAB-Protected-Objects.ps1"
+if (-not (Test-Path -LiteralPath $ProtectedObjectsPath)) {
+    throw "Protected object policy file missing. Execution blocked."
+}
+. $ProtectedObjectsPath
+if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+    throw "GLOBAL-Admin protected identity is not registered. Execution blocked."
+}
+$ProtectedSummary = Get-LabProtectedObjectSummary
+
 $Mode = if ($Execute) { "EXECUTION" } else { "DRY-RUN" }
 $Header = @(
     "============================================================"
@@ -24,6 +35,9 @@ $Header = @(
 ) -join [Environment]::NewLine
 
 Write-Host $Header -ForegroundColor Cyan
+Write-Host "Protected object policy: $($ProtectedSummary.Boundary)" -ForegroundColor Yellow
+Write-Host "Protected UPNs: $($ProtectedSummary.ProtectedUPNs -join ', ')" -ForegroundColor Yellow
+Write-Host "Protected DisplayNames: $($ProtectedSummary.ProtectedDisplayNames -join ', ')" -ForegroundColor Yellow
 
 # 1. Target Verification
 if ([string]::IsNullOrEmpty($TenantId) -or [string]::IsNullOrEmpty($TenantDomain)) {
@@ -42,10 +56,15 @@ if ($Execute) {
         Write-Host "Execution cancelled." -ForegroundColor Red
         return
     }
+
+    if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+        Write-Host "[BLOCKED] GLOBAL-Admin is not listed as protected before write phases." -ForegroundColor Red
+        return
+    }
 }
 
 # 2. Orchestration
-$ScriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+$ScriptDir = $ScriptRoot
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..\..\..")
 $MTXDir = Get-ChildItem -LiteralPath $ProjectRoot -Directory |
     Where-Object { $_.Name -like "03-MTX*" } |

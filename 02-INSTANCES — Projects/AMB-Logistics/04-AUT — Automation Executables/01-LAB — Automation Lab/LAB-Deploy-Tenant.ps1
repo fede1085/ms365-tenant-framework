@@ -16,9 +16,22 @@ if (-not $PSBoundParameters.ContainsKey("DryRun")) {
     $DryRun = $true
 }
 
-$ScriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProtectedObjectsPath = Join-Path $ScriptRoot "LAB-Protected-Objects.ps1"
+if (-not (Test-Path -LiteralPath $ProtectedObjectsPath)) {
+    throw "Protected object policy file missing. Execution blocked."
+}
+. $ProtectedObjectsPath
+if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+    throw "GLOBAL-Admin protected identity is not registered. Execution blocked."
+}
+$ProtectedSummary = Get-LabProtectedObjectSummary
+$ScriptDir = $ScriptRoot
 
 Write-Host ">>> Starting Full Tenant Baseline Build..." -ForegroundColor Green
+Write-Host ">>> Protected object policy loaded: $($ProtectedSummary.Boundary)" -ForegroundColor Yellow
+Write-Host ">>> Protected UPNs: $($ProtectedSummary.ProtectedUPNs -join ', ')" -ForegroundColor Yellow
+Write-Host ">>> Protected DisplayNames: $($ProtectedSummary.ProtectedDisplayNames -join ', ')" -ForegroundColor Yellow
 
 if (-not $DryRun) {
     if ([string]::IsNullOrEmpty($TenantId) -or [string]::IsNullOrEmpty($TenantDomain)) {
@@ -32,6 +45,11 @@ if (-not $DryRun) {
     $Confirm = Read-Host "Type 'YES' to confirm LAB execution against the target tenant"
     if ($Confirm -ne "YES") {
         Write-Host "Execution cancelled." -ForegroundColor Red
+        return
+    }
+
+    if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+        Write-Host "[BLOCKED] GLOBAL-Admin is not listed as protected before write phases." -ForegroundColor Red
         return
     }
 }

@@ -16,6 +16,16 @@ if (-not $PSBoundParameters.ContainsKey("DryRun")) {
     $DryRun = $true
 }
 
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProtectedObjectsPath = Join-Path $ScriptRoot "LAB-Protected-Objects.ps1"
+if (-not (Test-Path -LiteralPath $ProtectedObjectsPath)) {
+    throw "Protected object policy file missing. Execution blocked."
+}
+. $ProtectedObjectsPath
+if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+    throw "GLOBAL-Admin protected identity is not registered. Execution blocked."
+}
+
 $CSVPath = Join-Path $MTXDir "MTX-MAILBOXES.csv"
 if (-not (Test-Path $CSVPath)) {
     Write-Host "[!] Error: MTX-MAILBOXES.csv not found" -ForegroundColor Red
@@ -42,7 +52,17 @@ foreach ($MBX in $Mailboxes) {
     $Address = $MBX.TargetAddress
     $Alias = $MBX.Alias
     $OwnerUPN = $MBX.OwnerUPN
+    $MailboxProtection = Assert-LabNotProtectedObject -InputObject $MBX -ObjectType "SharedMailbox" -ObjectName $Address -AttemptedAction "Create or update shared mailbox"
+    if ($MailboxProtection.IsProtected) {
+        Write-Host "[$($MailboxProtection.State)] $($MailboxProtection.Reason)" -ForegroundColor Yellow
+        continue
+    }
+
+    $OwnerProtection = Assert-LabNotProtectedObject -InputObject ([PSCustomObject]@{ UserPrincipalName = $OwnerUPN }) -ObjectType "MailboxOwner" -ObjectName $OwnerUPN -AttemptedAction "Reference mailbox owner"
     Write-Host "Processing Shared Mailbox: $Address [Owner: $OwnerUPN]" -NoNewline
+    if ($OwnerProtection.IsProtected) {
+        Write-Host " [PROTECTED OWNER: no owner mutation allowed]" -NoNewline
+    }
     
     if ($DryRun) {
         Write-Host " [DRY-RUN: Skip Create Check]" -ForegroundColor Gray

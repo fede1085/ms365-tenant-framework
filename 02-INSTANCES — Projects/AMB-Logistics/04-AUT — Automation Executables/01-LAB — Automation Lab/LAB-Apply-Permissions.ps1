@@ -16,6 +16,16 @@ if (-not $PSBoundParameters.ContainsKey("DryRun")) {
     $DryRun = $true
 }
 
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProtectedObjectsPath = Join-Path $ScriptRoot "LAB-Protected-Objects.ps1"
+if (-not (Test-Path -LiteralPath $ProtectedObjectsPath)) {
+    throw "Protected object policy file missing. Execution blocked."
+}
+. $ProtectedObjectsPath
+if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+    throw "GLOBAL-Admin protected identity is not registered. Execution blocked."
+}
+
 $PermissionPath = Join-Path $MTXDir "MTX-PERMISSIONS.csv"
 $UserPath = Join-Path $MTXDir "MTX-USERS.csv"
 $GroupPath = Join-Path $MTXDir "MTX-GROUPS.csv"
@@ -128,6 +138,15 @@ foreach ($Perm in $Permissions) {
     }
 
     $State = "VALIDATING"
+    $PermissionProtection = Assert-LabNotProtectedObject -InputObject $Perm -ObjectType "Permission" -ObjectName $Perm.PermissionID -AttemptedAction "Apply permission"
+    $PrincipalProtection = Assert-LabNotProtectedObject -InputObject ([PSCustomObject]@{ UserPrincipalName = $Perm.UserUPN }) -ObjectType "PermissionPrincipal" -ObjectName $Perm.UserUPN -AttemptedAction "Grant or modify permission"
+    if ($PermissionProtection.IsProtected -or $PrincipalProtection.IsProtected) {
+        $State = "BLOCKED"
+        $Reason = @($PermissionProtection.Reason, $PrincipalProtection.Reason) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+        Write-Host "[$State] $($Perm.PermissionID) protected-object permission conflict: $($Reason -join '; ')" -ForegroundColor Red
+        continue
+    }
+
     $Problems = New-Object System.Collections.Generic.List[String]
     if ($Perm.ObjectType -notin $AllowedObjectTypes) {
         $Problems.Add("Invalid ObjectType '$($Perm.ObjectType)'")

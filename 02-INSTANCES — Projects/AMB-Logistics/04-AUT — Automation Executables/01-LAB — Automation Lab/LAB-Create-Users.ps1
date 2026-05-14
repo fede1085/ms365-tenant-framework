@@ -16,6 +16,16 @@ if (-not $PSBoundParameters.ContainsKey("DryRun")) {
     $DryRun = $true
 }
 
+$ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProtectedObjectsPath = Join-Path $ScriptRoot "LAB-Protected-Objects.ps1"
+if (-not (Test-Path -LiteralPath $ProtectedObjectsPath)) {
+    throw "Protected object policy file missing. Execution blocked."
+}
+. $ProtectedObjectsPath
+if (-not (Test-LabProtectedIdentity -UPN "homelab@federicomosqueira0910.onmicrosoft.com" -DisplayName "GLOBAL-Admin" -Role "Global Administrator")) {
+    throw "GLOBAL-Admin protected identity is not registered. Execution blocked."
+}
+
 $CSVPath = Join-Path $MTXDir "MTX-USERS.csv"
 if (-not (Test-Path $CSVPath)) {
     Write-Host "[!] Error: MTX-USERS.csv not found at $CSVPath" -ForegroundColor Red
@@ -33,6 +43,12 @@ if ($MissingColumns.Count -gt 0) {
 
 foreach ($User in $Users) {
     $UserPrincipalName = $User.UserPrincipalName
+    $Protection = Assert-LabNotProtectedObject -InputObject $User -ObjectType "User" -ObjectName $UserPrincipalName -AttemptedAction "Create or update user"
+    if ($Protection.IsProtected) {
+        Write-Host " [$($Protection.State): $($Protection.Reason)]" -ForegroundColor Yellow
+        continue
+    }
+
     Write-Host "Processing User: $UserPrincipalName" -NoNewline
     
     # Check if user exists
