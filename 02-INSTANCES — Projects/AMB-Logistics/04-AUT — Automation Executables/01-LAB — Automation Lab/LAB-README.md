@@ -22,7 +22,7 @@ The scripts follow the execution model:
 | :--- | :--- |
 | `LAB-Run-Project.ps1` | Main entry point for controlled execution. |
 | `LAB-Deploy-Tenant.ps1` | Orchestrator script for full baseline build. |
-| `LAB-Create-Users.ps1` | Logic for user creation and UPN assignment. |
+| `LAB-Create-Users.ps1` | Logic for user creation from AUT-DOC user schema. |
 | `LAB-Create-Groups.ps1` | Logic for Security and M365 Groups. |
 | `LAB-Create-Mailboxes.ps1` | Logic for Shared Mailboxes in EXO. |
 | `LAB-Apply-Permissions.ps1` | Logic for Group/Mailbox permission mapping. |

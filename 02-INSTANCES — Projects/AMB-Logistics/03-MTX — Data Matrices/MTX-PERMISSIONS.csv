@@ -1,61 +1,61 @@
-PermissionID,SubjectID,TargetID,PermissionLevel,Type
-PRM-001,U001,GRP-001,Owner,Owner
-PRM-002,U001,GRP-011,Owner,Owner
-PRM-003,U010,GRP-001,Member,Member
-PRM-004,U002,GRP-002,Owner,Owner
-PRM-005,U002,GRP-010,Owner,Owner
-PRM-006,U011,GRP-002,Member,Member
-PRM-007,U012,GRP-002,Member,Member
-PRM-008,U015,GRP-002,Member,Member
-PRM-009,U016,GRP-002,Member,Member
-PRM-010,U005,GRP-008,Owner,Owner
-PRM-011,U013,GRP-008,Member,Member
-PRM-012,U017,GRP-008,Member,Member
-PRM-013,U029,GRP-008,Member,Member
-PRM-014,U006,GRP-009,Owner,Owner
-PRM-015,U014,GRP-009,Member,Member
-PRM-016,U033,GRP-009,Member,Member
-PRM-017,U008,GRP-003,Owner,Owner
-PRM-018,U018,GRP-003,Member,Member
-PRM-019,U019,GRP-003,Member,Member
-PRM-020,U003,GRP-005,Owner,Owner
-PRM-021,U025,GRP-005,Member,Member
-PRM-022,U007,GRP-006,Owner,Owner
-PRM-023,U027,GRP-006,Member,Member
-PRM-024,U009,GRP-004,Owner,Owner
-PRM-025,U021,GRP-004,Member,Member
-PRM-026,U004,GRP-007,Owner,Owner
-PRM-027,U001,MBX-001,FullAccess,FullAccess
-PRM-028,U010,MBX-001,FullAccess,FullAccess
-PRM-029,U002,MBX-002,FullAccess,FullAccess
-PRM-030,U011,MBX-002,SendAs,SendAs
-PRM-031,U006,MBX-003,FullAccess,FullAccess
-PRM-032,U033,MBX-003,FullAccess,FullAccess
-PRM-033,U009,MBX-004,FullAccess,FullAccess
-PRM-034,U021,MBX-004,FullAccess,FullAccess
-PRM-035,U003,MBX-005,FullAccess,FullAccess
-PRM-036,U025,MBX-005,FullAccess,FullAccess
-PRM-037,U004,MBX-006,FullAccess,FullAccess
-PRM-038,U008,MBX-007,FullAccess,FullAccess
-PRM-039,U018,MBX-007,FullAccess,FullAccess
-PRM-040,U007,MBX-008,FullAccess,FullAccess
-PRM-041,A001,GRP-013,Member,Member
-PRM-042,A002,GRP-014,Member,Member
-PRM-043,A003,GRP-013,Member,Member
-PRM-044,U001,GRP-012,Member,Member
-PRM-045,U002,GRP-012,Member,Member
-PRM-046,U003,GRP-012,Member,Member
-PRM-047,U004,GRP-012,Member,Member
-PRM-048,U005,GRP-012,Member,Member
-PRM-049,U006,GRP-012,Member,Member
-PRM-050,U007,GRP-012,Member,Member
-PRM-051,U008,GRP-012,Member,Member
-PRM-052,U009,GRP-012,Member,Member
-PRM-053,A001,GRP-012,Member,Member
-PRM-054,A002,GRP-012,Member,Member
-PRM-055,A003,GRP-012,Member,Member
-PRM-056,U002,GRP-010,Member,Member
-PRM-057,U005,GRP-010,Member,Member
-PRM-058,U006,GRP-010,Member,Member
-PRM-059,U013,GRP-010,Member,Member
-PRM-060,U014,GRP-010,Member,Member
+"PermissionID","ObjectType","ObjectName","TargetAddress","UserUPN","AccessType","RoleScope","Enabled"
+"PRM-001","M365Group","TEAM-MGMT","TEAM-MGMT","jan.vandamme@amblogistics.be","Owner","MGMT","True"
+"PRM-002","M365Group","TEAM-ALL-STAFF","TEAM-ALL-STAFF","jan.vandamme@amblogistics.be","Owner","MGMT","True"
+"PRM-003","M365Group","TEAM-MGMT","TEAM-MGMT","lars.hermans@amblogistics.be","Member","MGMT","True"
+"PRM-004","M365Group","TEAM-OPS","TEAM-OPS","emma.peeters@amblogistics.be","Owner","OPS","True"
+"PRM-005","M365Group","TEAM-COORDINATION","TEAM-COORDINATION","emma.peeters@amblogistics.be","Owner","OPS","True"
+"PRM-006","M365Group","TEAM-OPS","TEAM-OPS","anke.smet@amblogistics.be","Member","OPS","True"
+"PRM-007","M365Group","TEAM-OPS","TEAM-OPS","dieter.vermeulen@amblogistics.be","Member","OPS","True"
+"PRM-008","M365Group","TEAM-OPS","TEAM-OPS","leen.willems@amblogistics.be","Member","OPS","True"
+"PRM-009","M365Group","TEAM-OPS","TEAM-OPS","koen.dumont@amblogistics.be","Member","OPS","True"
+"PRM-010","M365Group","TEAM-WHS","TEAM-WHS","marc.desmet@amblogistics.be","Owner","WHS","True"
+"PRM-011","M365Group","TEAM-WHS","TEAM-WHS","mieke.janssens@amblogistics.be","Member","WHS","True"
+"PRM-012","M365Group","TEAM-WHS","TEAM-WHS","stijn.vandenberghe@amblogistics.be","Member","WHS","True"
+"PRM-013","M365Group","TEAM-WHS","TEAM-WHS","ruben.vandekerckhove@amblogistics.be","Member","WHS","True"
+"PRM-014","M365Group","TEAM-DSP","TEAM-DSP","elena.mertens@amblogistics.be","Owner","DSP","True"
+"PRM-015","M365Group","TEAM-DSP","TEAM-DSP","bart.peeters@amblogistics.be","Member","DSP","True"
+"PRM-016","M365Group","TEAM-DSP","TEAM-DSP","gunter.dams@amblogistics.be","Member","DSP","True"
+"PRM-017","M365Group","TEAM-SAL","TEAM-SAL","sarah.jacobs@amblogistics.be","Owner","SAL","True"
+"PRM-018","M365Group","TEAM-SAL","TEAM-SAL","inge.verstraete@amblogistics.be","Member","SAL","True"
+"PRM-019","M365Group","TEAM-SAL","TEAM-SAL","tom.dekeyser@amblogistics.be","Member","SAL","True"
+"PRM-020","M365Group","TEAM-FIN","TEAM-FIN","luc.wouters@amblogistics.be","Owner","FIN","True"
+"PRM-021","M365Group","TEAM-FIN","TEAM-FIN","hendrik.vermeulen@amblogistics.be","Member","FIN","True"
+"PRM-022","M365Group","TEAM-IT","TEAM-IT","bram.willems@amblogistics.be","Owner","IT","True"
+"PRM-023","M365Group","TEAM-IT","TEAM-IT","pieter.desmet@amblogistics.be","Member","IT","True"
+"PRM-024","M365Group","TEAM-SUP","TEAM-SUP","kevin.claes@amblogistics.be","Owner","SUP","True"
+"PRM-025","M365Group","TEAM-SUP","TEAM-SUP","jonas.vermeiren@amblogistics.be","Member","SUP","True"
+"PRM-026","M365Group","TEAM-HR","TEAM-HR","sophie.maes@amblogistics.be","Owner","HR","True"
+"PRM-027","SharedMailbox","MBX - MGMT - Info","info@amblogistics.be","jan.vandamme@amblogistics.be","FullAccess","MGMT","True"
+"PRM-028","SharedMailbox","MBX - MGMT - Info","info@amblogistics.be","lars.hermans@amblogistics.be","FullAccess","MGMT","True"
+"PRM-029","SharedMailbox","MBX - OPS - Operations","operations@amblogistics.be","emma.peeters@amblogistics.be","FullAccess","OPS","True"
+"PRM-030","SharedMailbox","MBX - OPS - Operations","operations@amblogistics.be","anke.smet@amblogistics.be","SendAs","OPS","True"
+"PRM-031","SharedMailbox","MBX - DSP - Dispatch","dispatch@amblogistics.be","elena.mertens@amblogistics.be","FullAccess","DSP","True"
+"PRM-032","SharedMailbox","MBX - DSP - Dispatch","dispatch@amblogistics.be","gunter.dams@amblogistics.be","FullAccess","DSP","True"
+"PRM-033","SharedMailbox","MBX - SUP - Support","support@amblogistics.be","kevin.claes@amblogistics.be","FullAccess","SUP","True"
+"PRM-034","SharedMailbox","MBX - SUP - Support","support@amblogistics.be","jonas.vermeiren@amblogistics.be","FullAccess","SUP","True"
+"PRM-035","SharedMailbox","MBX - FIN - Finance","finance@amblogistics.be","luc.wouters@amblogistics.be","FullAccess","FIN","True"
+"PRM-036","SharedMailbox","MBX - FIN - Finance","finance@amblogistics.be","hendrik.vermeulen@amblogistics.be","FullAccess","FIN","True"
+"PRM-037","SharedMailbox","MBX - HR - Human Resources","hr@amblogistics.be","sophie.maes@amblogistics.be","FullAccess","HR","True"
+"PRM-038","SharedMailbox","MBX - SAL - Sales","sales@amblogistics.be","sarah.jacobs@amblogistics.be","FullAccess","SAL","True"
+"PRM-039","SharedMailbox","MBX - SAL - Sales","sales@amblogistics.be","inge.verstraete@amblogistics.be","FullAccess","SAL","True"
+"PRM-040","SharedMailbox","MBX - IT - Tech Support","it@amblogistics.be","bram.willems@amblogistics.be","FullAccess","IT","True"
+"PRM-041","SecurityGroup","SEC-ADMINS-GLOBAL","SEC-ADMINS-GLOBAL","admin.jan@amblogistics.be","Member","IT","True"
+"PRM-042","SecurityGroup","SEC-ADMINS-TEAMS","SEC-ADMINS-TEAMS","admin.bram@amblogistics.be","Member","IT","True"
+"PRM-043","SecurityGroup","SEC-ADMINS-GLOBAL","SEC-ADMINS-GLOBAL","breakglass@amblogistics.be","Member","IT","True"
+"PRM-044","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","jan.vandamme@amblogistics.be","Member","IT","True"
+"PRM-045","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","emma.peeters@amblogistics.be","Member","IT","True"
+"PRM-046","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","luc.wouters@amblogistics.be","Member","IT","True"
+"PRM-047","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","sophie.maes@amblogistics.be","Member","IT","True"
+"PRM-048","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","marc.desmet@amblogistics.be","Member","IT","True"
+"PRM-049","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","elena.mertens@amblogistics.be","Member","IT","True"
+"PRM-050","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","bram.willems@amblogistics.be","Member","IT","True"
+"PRM-051","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","sarah.jacobs@amblogistics.be","Member","IT","True"
+"PRM-052","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","kevin.claes@amblogistics.be","Member","IT","True"
+"PRM-053","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","admin.jan@amblogistics.be","Member","IT","True"
+"PRM-054","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","admin.bram@amblogistics.be","Member","IT","True"
+"PRM-055","SecurityGroup","SEC-MFA-ENFORCED","SEC-MFA-ENFORCED","breakglass@amblogistics.be","Member","IT","True"
+"PRM-056","M365Group","TEAM-COORDINATION","TEAM-COORDINATION","emma.peeters@amblogistics.be","Member","OPS","True"
+"PRM-057","M365Group","TEAM-COORDINATION","TEAM-COORDINATION","marc.desmet@amblogistics.be","Member","OPS","True"
+"PRM-058","M365Group","TEAM-COORDINATION","TEAM-COORDINATION","elena.mertens@amblogistics.be","Member","OPS","True"
+"PRM-059","M365Group","TEAM-COORDINATION","TEAM-COORDINATION","mieke.janssens@amblogistics.be","Member","OPS","True"
+"PRM-060","M365Group","TEAM-COORDINATION","TEAM-COORDINATION","bart.peeters@amblogistics.be","Member","OPS","True"

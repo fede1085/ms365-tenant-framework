@@ -19,7 +19,7 @@ if (-not (Test-Path $CSVPath)) {
 }
 
 $Mailboxes = Import-Csv $CSVPath
-$RequiredColumns = @("MailboxID", "DisplayName", "Alias", "UPN", "Department", "OwnerID", "Purpose")
+$RequiredColumns = @("MailboxID", "DisplayName", "Alias", "TargetAddress", "Department", "OwnerID", "Purpose")
 $Columns = @($Mailboxes | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name -Unique)
 $MissingColumns = @($RequiredColumns | Where-Object { $_ -notin $Columns })
 if ($MissingColumns.Count -gt 0) {
@@ -28,7 +28,7 @@ if ($MissingColumns.Count -gt 0) {
 }
 
 foreach ($MBX in $Mailboxes) {
-    $Address = $MBX.UPN
+    $Address = $MBX.TargetAddress
     $Alias = $MBX.Alias
     Write-Host "Processing Shared Mailbox: $Address" -NoNewline
     

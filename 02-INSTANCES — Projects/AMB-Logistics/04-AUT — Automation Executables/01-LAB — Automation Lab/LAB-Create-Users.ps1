@@ -19,7 +19,7 @@ if (-not (Test-Path $CSVPath)) {
 }
 
 $Users = Import-Csv $CSVPath
-$RequiredColumns = @("UserID", "FirstName", "LastName", "UPN", "DisplayName", "Department", "Role", "Location", "AdminRole")
+$RequiredColumns = @("UserID", "DisplayName", "FirstName", "LastName", "UserPrincipalName", "MailNickname", "Department", "JobTitle", "UsageLocation", "LicenseSKU", "PasswordProfile", "AccountEnabled")
 $Columns = @($Users | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name -Unique)
 $MissingColumns = @($RequiredColumns | Where-Object { $_ -notin $Columns })
 if ($MissingColumns.Count -gt 0) {
@@ -28,15 +28,14 @@ if ($MissingColumns.Count -gt 0) {
 }
 
 foreach ($User in $Users) {
-    $UPN = $User.UPN
-    $MailNickname = ($User.UPN -split "@")[0]
-    Write-Host "Processing User: $UPN" -NoNewline
+    $UserPrincipalName = $User.UserPrincipalName
+    Write-Host "Processing User: $UserPrincipalName" -NoNewline
     
     # Check if user exists
     if ($DryRun) {
         Write-Host " [DRY-RUN: Skip Create Check]" -ForegroundColor Gray
     } else {
-        $ExistingUser = Get-MgUser -UserId $UPN -ErrorAction SilentlyContinue
+        $ExistingUser = Get-MgUser -UserId $UserPrincipalName -ErrorAction SilentlyContinue
         if ($ExistingUser) {
             Write-Host " [EXISTS: Skipping]" -ForegroundColor Yellow
         } else {
@@ -45,7 +44,7 @@ foreach ($User in $Users) {
                 Password = "InitialPassword123!" # In real scenarios, use dynamic generation
                 ForceChangePasswordNextSignIn = $true
             }
-            # New-MgUser -DisplayName $User.DisplayName -UserPrincipalName $UPN -MailNickname $MailNickname -AccountEnabled $true -PasswordProfile $PasswordProfile -UsageLocation "BE"
+            # New-MgUser -DisplayName $User.DisplayName -UserPrincipalName $UserPrincipalName -MailNickname $User.MailNickname -AccountEnabled ([System.Convert]::ToBoolean($User.AccountEnabled)) -PasswordProfile $PasswordProfile -UsageLocation $User.UsageLocation
         }
     }
 }

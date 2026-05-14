@@ -18,10 +18,10 @@ Write-Host "============================================================" -Foreg
 
 # 1. Summary logic (Simulated for Lab)
 $MatrixSchemas = @{
-    "MTX-USERS.csv"       = @("UserID", "FirstName", "LastName", "UPN", "DisplayName", "Department", "Role", "Location", "AdminRole")
+    "MTX-USERS.csv"       = @("UserID", "DisplayName", "FirstName", "LastName", "UserPrincipalName", "MailNickname", "Department", "JobTitle", "UsageLocation", "LicenseSKU", "PasswordProfile", "AccountEnabled")
     "MTX-GROUPS.csv"      = @("GroupID", "DisplayName", "Type", "Department", "OwnerID", "Description")
-    "MTX-MAILBOXES.csv"   = @("MailboxID", "DisplayName", "Alias", "UPN", "Department", "OwnerID", "Purpose")
-    "MTX-PERMISSIONS.csv" = @("PermissionID", "SubjectID", "TargetID", "PermissionLevel", "Type")
+    "MTX-MAILBOXES.csv"   = @("MailboxID", "DisplayName", "Alias", "TargetAddress", "Department", "OwnerID", "Purpose")
+    "MTX-PERMISSIONS.csv" = @("PermissionID", "ObjectType", "ObjectName", "TargetAddress", "UserUPN", "AccessType", "RoleScope", "Enabled")
     "MTX-LICENSES.csv"    = @("LicenseID", "UserID", "SKU", "Status")
 }
 
@@ -45,16 +45,22 @@ foreach ($MatrixName in $MatrixSchemas.Keys) {
 }
 
 $UserIDs = @{}
+$UserUPNs = @{}
 $GroupIDs = @{}
+$GroupNames = @{}
 $MailboxIDs = @{}
+$MailboxAddresses = @{}
 foreach ($User in $MatrixData["MTX-USERS.csv"]) {
     $UserIDs[$User.UserID] = $true
+    $UserUPNs[$User.UserPrincipalName] = $true
 }
 foreach ($Group in $MatrixData["MTX-GROUPS.csv"]) {
     $GroupIDs[$Group.GroupID] = $true
+    $GroupNames[$Group.DisplayName] = $true
 }
 foreach ($Mailbox in $MatrixData["MTX-MAILBOXES.csv"]) {
     $MailboxIDs[$Mailbox.MailboxID] = $true
+    $MailboxAddresses[$Mailbox.TargetAddress] = $true
 }
 
 $ValidationWarnings = @()
@@ -69,17 +75,17 @@ foreach ($Mailbox in $MatrixData["MTX-MAILBOXES.csv"]) {
     }
 }
 foreach ($Permission in $MatrixData["MTX-PERMISSIONS.csv"]) {
-    if (-not $UserIDs.ContainsKey($Permission.SubjectID)) {
-        $ValidationWarnings += "Permission $($Permission.PermissionID) references missing SubjectID $($Permission.SubjectID)"
+    if (-not $UserUPNs.ContainsKey($Permission.UserUPN)) {
+        $ValidationWarnings += "Permission $($Permission.PermissionID) references missing UserUPN $($Permission.UserUPN)"
     }
 
-    $TargetIsKnown = $GroupIDs.ContainsKey($Permission.TargetID) -or $MailboxIDs.ContainsKey($Permission.TargetID)
+    $TargetIsKnown = $MailboxAddresses.ContainsKey($Permission.TargetAddress) -or $GroupNames.ContainsKey($Permission.ObjectName)
     if (-not $TargetIsKnown) {
-        $ValidationWarnings += "Permission $($Permission.PermissionID) references missing TargetID $($Permission.TargetID)"
+        $ValidationWarnings += "Permission $($Permission.PermissionID) references missing target $($Permission.TargetAddress)"
     }
 
-    if ($Permission.Type -ne $Permission.PermissionLevel) {
-        $ValidationWarnings += "Permission $($Permission.PermissionID) has Type '$($Permission.Type)' but PermissionLevel '$($Permission.PermissionLevel)'"
+    if ($Permission.Enabled -notin @("True", "False")) {
+        $ValidationWarnings += "Permission $($Permission.PermissionID) has invalid Enabled value $($Permission.Enabled)"
     }
 }
 foreach ($License in $MatrixData["MTX-LICENSES.csv"]) {
