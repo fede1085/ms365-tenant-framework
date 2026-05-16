@@ -1,0 +1,12 @@
+TeamID,DisplayName,GroupMailNickname,PrimarySMTP,OwnerUPN,Visibility,Enabled
+TEAM-MGMT,TEAM-MGMT,team-mgmt,team-mgmt@amblogistics.be,jan.vandamme@amblogistics.be,Private,True
+TEAM-OPS,TEAM-OPS,team-ops,team-ops@amblogistics.be,emma.peeters@amblogistics.be,Private,True
+TEAM-SAL,TEAM-SAL,team-sal,team-sal@amblogistics.be,sarah.jacobs@amblogistics.be,Private,True
+TEAM-SUP,TEAM-SUP,team-sup,team-sup@amblogistics.be,kevin.claes@amblogistics.be,Private,True
+TEAM-FIN,TEAM-FIN,team-fin,team-fin@amblogistics.be,luc.wouters@amblogistics.be,Private,True
+TEAM-IT,TEAM-IT,team-it,team-it@amblogistics.be,bram.willems@amblogistics.be,Private,True
+TEAM-HR,TEAM-HR,team-hr,team-hr@amblogistics.be,sophie.maes@amblogistics.be,Private,True
+TEAM-WHS,TEAM-WHS,team-whs,team-whs@amblogistics.be,marc.desmet@amblogistics.be,Private,True
+TEAM-DSP,TEAM-DSP,team-dsp,team-dsp@amblogistics.be,elena.mertens@amblogistics.be,Private,True
+TEAM-COORDINATION,TEAM-COORDINATION,team-coordination,team-coordination@amblogistics.be,emma.peeters@amblogistics.be,Private,True
+TEAM-ALL-STAFF,TEAM-ALL-STAFF,team-all-staff,team-all-staff@amblogistics.be,jan.vandamme@amblogistics.be,Private,True

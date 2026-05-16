@@ -11,7 +11,7 @@
 | **Primary Domain** | amblogistics.be |
 | **Tenant Type** | DEV |
 | **User Count** | ~35 (Fictitious Realistic) |
-| **Status** | MATRIX_READY |
+| **Status** | MATRIX_ALIGNED |
 
 ---
 
@@ -86,7 +86,7 @@
 * **Ownership**: Every group/mailbox MUST have a primary owner.
 
 ### 5.2 Naming Conventions
-* **Teams**: `DEPT-Name`
+* **Teams**: `TEAM-<DEPT-CODE>`
 * **Groups**: `GRP-Function`
 * **Mailboxes**: `alias@amblogistics.be`
 * **UPNs**: `firstname.lastname@amblogistics.be`
@@ -95,12 +95,19 @@
 
 ## 6. Implementation Readiness
 
-* **Phase**: Matrix Generation Complete.
-* **Next Action**: 04-AUT — Automation Logic Generation Prompt.
+* **Phase**: Matrix Alignment Complete.
+* **Next Action**: Manual review before any tenant execution.
 * **Ontology Verification**:
     * [x] No framework files modified.
     * [x] Strictly operational (Tenant Ontology).
     * [x] Naming aligns with RULE-005.
+
+### 6.1 Runtime Alignment Notes
+
+* BLP remains business intent only. AUT must consume only the normalized MTX files in this AMB instance.
+* `MTX-LICENSES.csv` is a load/count input contract only. Current LAB/AUT does not assign licenses.
+* Teams and SharePoint are optional workloads. AMB now includes minimal optional MTX files because the blueprint explicitly models Teams and document libraries.
+* Protected AMB identities are `admin.jan@amblogistics.be`, `admin.bram@amblogistics.be`, and `breakglass@amblogistics.be`. ObjectId values remain `UNKNOWN` until tenant validation.
 
 ---
 

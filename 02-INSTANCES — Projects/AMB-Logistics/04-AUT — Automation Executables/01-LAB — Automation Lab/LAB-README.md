@@ -25,6 +25,7 @@ The scripts follow the execution model:
 - **Modules Required**: `Microsoft.Graph`, `ExchangeOnlineManagement`
 - **DryRun First**: DryRun is the default behavior.
 - **Execute Gate**: Real execution requires `-Execute` and the phrase `I UNDERSTAND THIS WILL MODIFY THE TENANT`.
+- **Optional Workloads**: Teams and SharePoint MTX files may exist for modeling, but this LAB runtime only executes users, groups, shared mailboxes, permissions, validation, and license load/count.
 
 ## 3. Contents
 
@@ -53,21 +54,21 @@ No deletion is implemented by default. No broad tenant wipe is implemented. Rese
 
 ## 5. Protected Object Safety
 
-Critical protected identity:
+Critical protected identities:
 
-- DisplayName: `GLOBAL-Admin`
-- Primary UPN: `homelab@federicomosqueira0910.onmicrosoft.com`
-- Aliases: `global.admin@federicomosqueira.site`, `hello@federicomosqueira.site`
-- Role: `Global Administrator`
-- ObjectId: `<UNKNOWN_OBJECT_ID_GLOBAL_ADMIN>` until supplied or resolved during live execution
+| DisplayName | UPN | Alias | Role | ObjectId |
+| :--- | :--- | :--- | :--- | :--- |
+| `Admin Jan` | `admin.jan@amblogistics.be` | `admin.jan` | `Global Administrator` | `UNKNOWN` |
+| `Admin Bram` | `admin.bram@amblogistics.be` | `admin.bram` | `IT Administrator / Teams Administrator` | `UNKNOWN` |
+| `Emergency BreakGlass` | `breakglass@amblogistics.be` | `breakglass` | `Emergency Access / Global Administrator` | `UNKNOWN` |
 
-The runtime must never delete, disable, rename, recreate, reset password, change UPN, change aliases, remove roles, remove Global Administrator, remove group memberships, remove ownership, change licenses, convert to a standard user, or include this identity in reset/rebuild logic.
+The runtime must never delete, disable, rename, recreate, reset password, change UPN, change aliases, remove roles, remove administrator privileges, remove group memberships, remove ownership, change licenses, convert to a standard user, or include these identities in reset/rebuild logic.
 
 ObjectId handling:
 
-- The placeholder remains in `LAB-Protected-Objects.ps1`.
-- `-ProtectedGlobalAdminObjectId "<object-id>"` can add ObjectId protection at runtime.
-- In live execution, the orchestrator attempts a read-only `Get-MgUser -UserId "homelab@federicomosqueira0910.onmicrosoft.com"` lookup after Graph connection and before write phases.
+- ObjectId values are unknown until supplied or resolved during live execution.
+- `-ProtectedGlobalAdminObjectId "<object-id>"` remains available as a compatibility parameter for adding a known protected ObjectId at runtime.
+- In live execution, the orchestrator attempts read-only `Get-MgUser` lookups for the protected AMB UPNs after Graph connection and before write phases.
 - If unresolved, execution may continue only with UPN, alias, display name, and role protection validated, and logs a warning.
 
 ## 6. Commands
@@ -101,7 +102,8 @@ Live validation:
 - Users: real create/verify/update-safe
 - Groups: real create/verify/owners-safe
 - Shared mailboxes: real create/verify with bounded propagation polling
-- Permissions: real apply/verify where supported
+- Permissions: real apply/verify where supported; protected principals are skipped
 - Licenses: skipped
+- Teams/SharePoint: modeled in optional MTX only; not executed by this LAB runtime
 - Delete/reset: disabled by default
-- GLOBAL-Admin: protected
+- AMB admin and break-glass identities: protected

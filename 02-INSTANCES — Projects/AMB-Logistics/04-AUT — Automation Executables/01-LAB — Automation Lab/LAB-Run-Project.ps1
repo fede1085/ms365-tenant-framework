@@ -50,7 +50,7 @@ Write-Host "Aliases:      $($ProtectedSummary.ProtectedAliases -join ', ')"
 Write-Host "DisplayNames: $($ProtectedSummary.ProtectedDisplayNames -join ', ')"
 Write-Host "Roles:        $($ProtectedSummary.ProtectedRoles -join ', ')"
 if (-not $ProtectedSummary.ObjectIdResolved) {
-    Write-Warning "GLOBAL-Admin ObjectId unresolved; protection continues by UPN, alias, display name, and role."
+    Write-Warning "Protected ObjectId values unresolved; protection continues by UPN, alias, display name, and role."
 }
 Write-Host ""
 Write-Host "[TARGET TENANT]" -ForegroundColor Yellow

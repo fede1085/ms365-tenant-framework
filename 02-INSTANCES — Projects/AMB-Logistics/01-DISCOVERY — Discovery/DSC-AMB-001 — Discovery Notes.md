@@ -23,5 +23,10 @@
 - Separation of "Operations Coordination" from general management to facilitate daily workflow sync between Warehouse and Dispatch.
 - All users follow the `firstname.lastname` UPN pattern.
 
+## Alignment Note - 2026-05-16
+- Teams and SharePoint remain optional workloads, but AMB has explicit blueprint intent for both. Minimal optional MTX files may model them without requiring execution.
+- Runtime execution authority is MTX only. Discovery and BLP provide business context and are not runtime inputs.
+- Admin and break-glass accounts are protected objects; ObjectId values are unknown until resolved from the live tenant.
+
 ---
 *Document created during initialization phase.*

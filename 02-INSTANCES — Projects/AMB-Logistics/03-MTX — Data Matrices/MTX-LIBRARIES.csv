@@ -1,0 +1,12 @@
+LibraryID,SiteID,LibraryName,LibraryType,OwnerUPN,Enabled
+LIB-MGMT-DOCS,SITE-MGMT,Management Documents,DocumentLibrary,jan.vandamme@amblogistics.be,True
+LIB-OPS-DOCS,SITE-OPS,Operations Documents,DocumentLibrary,emma.peeters@amblogistics.be,True
+LIB-SAL-DOCS,SITE-SAL,Sales Documents,DocumentLibrary,sarah.jacobs@amblogistics.be,True
+LIB-SUP-DOCS,SITE-SUP,Support Documents,DocumentLibrary,kevin.claes@amblogistics.be,True
+LIB-FIN-DOCS,SITE-FIN,Finance Documents,DocumentLibrary,luc.wouters@amblogistics.be,True
+LIB-IT-DOCS,SITE-IT,IT Documents,DocumentLibrary,bram.willems@amblogistics.be,True
+LIB-HR-DOCS,SITE-HR,HR Documents,DocumentLibrary,sophie.maes@amblogistics.be,True
+LIB-WHS-DOCS,SITE-WHS,Warehouse Documents,DocumentLibrary,marc.desmet@amblogistics.be,True
+LIB-DSP-DOCS,SITE-DSP,Dispatch Documents,DocumentLibrary,elena.mertens@amblogistics.be,True
+LIB-COORD-DOCS,SITE-COORD,Operations Coordination Documents,DocumentLibrary,emma.peeters@amblogistics.be,True
+LIB-ALL-DOCS,SITE-ALL,All Staff Documents,DocumentLibrary,jan.vandamme@amblogistics.be,True

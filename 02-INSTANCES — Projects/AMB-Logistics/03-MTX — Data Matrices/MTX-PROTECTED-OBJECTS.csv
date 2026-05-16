@@ -1,0 +1,4 @@
+ProtectedObjectID,UserPrincipalName,DisplayName,Alias,ObjectId,RoleTitle,ProtectionReason,MutationPolicy,Notes
+PO-001,admin.jan@amblogistics.be,Admin Jan,admin.jan,UNKNOWN,Global Administrator,Primary AMB Global Admin,NoMutation,ObjectId unknown until tenant lookup.
+PO-002,admin.bram@amblogistics.be,Admin Bram,admin.bram,UNKNOWN,IT Administrator / Teams Administrator,Privileged AMB admin account,NoMutation,ObjectId unknown until tenant lookup.
+PO-003,breakglass@amblogistics.be,Emergency BreakGlass,breakglass,UNKNOWN,Emergency Access / Global Administrator,AMB emergency break-glass account,NoMutation,ObjectId unknown until tenant lookup.

@@ -162,6 +162,10 @@ foreach ($Perm in $Permissions) {
         Write-Host "[BLOCKED] $($Perm.PermissionID) protected target is ambiguous for permission mutation: $($PermissionProtection.Reason)" -ForegroundColor Red
         continue
     }
+    if ($PrincipalProtection.IsProtected) {
+        Write-Host "[$($PrincipalProtection.State)] $($Perm.PermissionID) protected principal is not mutated by LAB permissions runtime: $($PrincipalProtection.Reason)" -ForegroundColor Yellow
+        continue
+    }
 
     $Problems = New-Object System.Collections.Generic.List[String]
     if ($Perm.ObjectType -notin $AllowedObjectTypes) {
@@ -194,10 +198,6 @@ foreach ($Perm in $Permissions) {
     }
 
     $Plan = "{0}: {1} -> {2} on {3} ({4})" -f $Perm.PermissionID, $Perm.UserUPN, $Perm.AccessType, $Perm.TargetAddress, $Perm.ObjectType
-    if ($PrincipalProtection.IsProtected) {
-        Write-Host "[READY][PROTECTED PRINCIPAL: explicit non-destructive add only] $Plan" -ForegroundColor Yellow
-    }
-
     if ($DryRun) {
         Write-Host "[READY][DRY-RUN] $Plan" -ForegroundColor Gray
         continue

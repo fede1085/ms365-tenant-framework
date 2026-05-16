@@ -34,7 +34,7 @@ $ProtectedSummary = Get-LabProtectedObjectSummary
 Write-Host ">>> Starting AMB-Logistics tenant-local controlled runtime..." -ForegroundColor Green
 Write-Host ">>> Protected object policy loaded: $($ProtectedSummary.Boundary)" -ForegroundColor Yellow
 if (-not $ProtectedSummary.ObjectIdResolved) {
-    Write-Warning "GLOBAL-Admin ObjectId unresolved; protection continues by UPN, alias, display name, and role."
+    Write-Warning "Protected ObjectId values unresolved; protection continues by UPN, alias, display name, and role."
 }
 
 if (-not (Test-Path -LiteralPath $MTXDir)) {
@@ -106,7 +106,7 @@ Test-LabMatrixSchema -MatrixName "MTX-USERS.csv" -RequiredColumns @("UserID", "D
 Test-LabMatrixSchema -MatrixName "MTX-GROUPS.csv" -RequiredColumns @("GroupID", "DisplayName", "GroupType", "MailNickname", "PrimarySMTP", "Department", "Description", "OwnerUPN", "MailEnabled", "SecurityEnabled")
 Test-LabMatrixSchema -MatrixName "MTX-MAILBOXES.csv" -RequiredColumns @("MailboxID", "DisplayName", "Alias", "TargetAddress", "Department", "Purpose", "OwnerUPN", "Enabled")
 Test-LabMatrixSchema -MatrixName "MTX-PERMISSIONS.csv" -RequiredColumns @("PermissionID", "ObjectType", "ObjectName", "TargetAddress", "UserUPN", "AccessType", "RoleScope", "Enabled")
-Test-LabMatrixSchema -MatrixName "MTX-LICENSES.csv" -RequiredColumns @("LicenseID", "UserID", "SKU", "Status")
+Test-LabMatrixSchema -MatrixName "MTX-LICENSES.csv" -RequiredColumns @("LicenseID", "UserPrincipalName", "LicenseSKU", "UsageLocation", "AssignmentState", "Notes")
 
 if (-not $DryRun) {
     Test-LabRuntimeDependencies
@@ -140,19 +140,20 @@ if (-not $DryRun) {
         }
     }
 
-    $ResolvedGlobalAdmin = $null
-    try {
-        $ResolvedGlobalAdmin = Get-MgUser -UserId "homelab@federicomosqueira0910.onmicrosoft.com" -ErrorAction Stop
-    } catch {
-        $ResolvedGlobalAdmin = $null
-    }
+    foreach ($ProtectedUPN in $ProtectedSummary.ProtectedUPNs) {
+        $ResolvedProtectedObject = $null
+        try {
+            $ResolvedProtectedObject = Get-MgUser -UserId $ProtectedUPN -ErrorAction Stop
+        } catch {
+            $ResolvedProtectedObject = $null
+        }
 
-    if ($null -ne $ResolvedGlobalAdmin -and -not [string]::IsNullOrWhiteSpace($ResolvedGlobalAdmin.Id)) {
-        [void](Add-LabProtectedObjectId -ObjectId $ResolvedGlobalAdmin.Id)
-        $ProtectedGlobalAdminObjectId = $ResolvedGlobalAdmin.Id
-        Write-Host "[VALIDATED] GLOBAL-Admin ObjectId resolved and added to protected-object policy." -ForegroundColor Yellow
-    } else {
-        Write-Warning "GLOBAL-Admin ObjectId unresolved; protection continues by UPN, alias, display name, and role."
+        if ($null -ne $ResolvedProtectedObject -and -not [string]::IsNullOrWhiteSpace($ResolvedProtectedObject.Id)) {
+            [void](Add-LabProtectedObjectId -ObjectId $ResolvedProtectedObject.Id)
+            Write-Host "[VALIDATED] Protected ObjectId resolved and added: $ProtectedUPN" -ForegroundColor Yellow
+        } else {
+            Write-Warning "Protected ObjectId unresolved for $ProtectedUPN; protection continues by UPN, alias, display name, and role."
+        }
     }
 
     [void](Confirm-LabProtectedBaseline)

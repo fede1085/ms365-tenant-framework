@@ -14,9 +14,14 @@ Definir el entorno de colaboración basado en Microsoft Teams y Shared Mailboxes
 # 2. Microsoft Teams Architecture
 
 ### 2.1 Departmental Teams
-Cada departamento tendrá un Team dedicado con un canal "General" y canales por función.
+Cada departamento tendra un Team dedicado con un canal "General" y canales por funcion cuando aplique.
 *   **TEAM-MGMT:** Canales: `Strategy`, `Finance-Review`.
 *   **TEAM-OPS:** Canales: `International`, `Local-BE`.
+*   **TEAM-SAL:** Canal: `Sales-Pipeline`.
+*   **TEAM-SUP:** Canal: `Client-Issues`.
+*   **TEAM-FIN:** Canal: `Invoicing`.
+*   **TEAM-IT:** Canal: `Service-Desk`.
+*   **TEAM-HR:** Canal: `People-Ops`.
 *   **TEAM-WHS:** Canales: `Inventory`, `Stock-HQ`.
 *   **TEAM-DSP:** Canales: `Drivers`, `Route-Planning`.
 
@@ -34,8 +39,11 @@ Cada departamento tendrá un Team dedicado con un canal "General" y canales por 
 | **MBX - MGMT - Info** | `info@` | MGMT | Consultas externas generales. |
 | **MBX - OPS - Operations** | `operations@` | OPS | Reservas y seguimiento internacional. |
 | **MBX - DSP - Dispatch** | `dispatch@` | DSP | Coordinación diaria de transportistas. |
+| **MBX - SUP - Support** | `support@` | SUP | Incidencias y soporte a clientes. |
 | **MBX - SAL - Sales** | `sales@` | SAL | Leads y presupuestos. |
 | **MBX - FIN - Finance** | `finance@` | FIN | Facturas recibidas y nóminas. |
+| **MBX - HR - Human Resources** | `hr@` | HR | Reclutamiento y consultas internas. |
+| **MBX - IT - Tech Support** | `it@` | IT | Solicitudes tecnicas y gobierno de TI. |
 
 ---
 
@@ -43,6 +51,12 @@ Cada departamento tendrá un Team dedicado con un canal "General" y canales por 
 *   **Libraries:** Cada Team tendrá una librería de documentos estructurada por año/proyecto.
 *   **Naming Folder:** `NN-Nombre` (Ej: `01-Proyectos`, `02-Archivo`).
 *   **Permissions:** Acceso basado en membresía del Team (Role-Based).
+*   **Runtime Scope:** SharePoint queda modelado en MTX opcional (`MTX-SITES.csv`, `MTX-LIBRARIES.csv`). La ejecucion requiere confirmacion explicita y validacion del hostname SharePoint del tenant.
+
+---
+
+# 4.1 Runtime Alignment Note
+BLP describe la intencion de colaboracion. AUT no consume este blueprint como entrada de ejecucion; AUT consume solo los archivos MTX normalizados de la instancia.
 
 ---
 

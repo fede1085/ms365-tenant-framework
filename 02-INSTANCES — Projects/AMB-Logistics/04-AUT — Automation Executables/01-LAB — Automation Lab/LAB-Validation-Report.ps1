@@ -141,16 +141,16 @@ function Resolve-MailboxMatrixRow {
 
 function Invoke-StaticValidation {
     Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "LAB-Protected-Objects.ps1 exists and was imported fail-closed." -Reference $ProtectedObjectsPath
-    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected UPN is present: $($ProtectedSummary.ProtectedUPNs -join ', ')." -Reference "LAB-Protected-Objects.ps1"
-    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected aliases are present: $($ProtectedSummary.ProtectedAliases -join ', ')." -Reference "LAB-Protected-Objects.ps1"
-    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected display name is present: $($ProtectedSummary.ProtectedDisplayNames -join ', ')." -Reference "LAB-Protected-Objects.ps1"
-    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin protected role is present: $($ProtectedSummary.ProtectedRoles -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "AMB protected UPNs are present: $($ProtectedSummary.ProtectedUPNs -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "AMB protected aliases are present: $($ProtectedSummary.ProtectedAliases -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "AMB protected display names are present: $($ProtectedSummary.ProtectedDisplayNames -join ', ')." -Reference "LAB-Protected-Objects.ps1"
+    Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "AMB protected roles are present: $($ProtectedSummary.ProtectedRoles -join ', ')." -Reference "LAB-Protected-Objects.ps1"
     Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "SKIPPED_PROTECTED is supported by LAB validation states." -Reference "AUT-SYS-001"
 
     if ($ProtectedSummary.ObjectIdResolved) {
-        Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin ObjectId protection is present." -Reference "LAB-Protected-Objects.ps1"
+        Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedObjectPolicy" -Message "At least one protected ObjectId value is present." -Reference "LAB-Protected-Objects.ps1"
     } else {
-        Add-ValidationRecord -Status "WARNING" -Scope "ProtectedObjectPolicy" -Message "GLOBAL-Admin ObjectId unresolved; protection continues by UPN, alias, display name, and role." -Reference "LAB-Protected-Objects.ps1"
+        Add-ValidationRecord -Status "WARNING" -Scope "ProtectedObjectPolicy" -Message "Protected ObjectId values unresolved; protection continues by UPN, alias, display name, and role." -Reference "LAB-Protected-Objects.ps1"
     }
 
     foreach ($ScriptName in @("LAB-Run-Project.ps1", "LAB-Deploy-Tenant.ps1", "LAB-Create-Users.ps1", "LAB-Create-Groups.ps1", "LAB-Create-Mailboxes.ps1", "LAB-Apply-Permissions.ps1", "LAB-Validation-Report.ps1")) {
@@ -170,7 +170,14 @@ function Invoke-StaticValidation {
         "MTX-GROUPS.csv"      = @("GroupID", "DisplayName", "GroupType", "MailNickname", "PrimarySMTP", "Department", "Description", "OwnerUPN", "MailEnabled", "SecurityEnabled")
         "MTX-MAILBOXES.csv"   = @("MailboxID", "DisplayName", "Alias", "TargetAddress", "Department", "Purpose", "OwnerUPN", "Enabled")
         "MTX-PERMISSIONS.csv" = @("PermissionID", "ObjectType", "ObjectName", "TargetAddress", "UserUPN", "AccessType", "RoleScope", "Enabled")
-        "MTX-LICENSES.csv"    = @("LicenseID", "UserID", "SKU", "Status")
+        "MTX-LICENSES.csv"    = @("LicenseID", "UserPrincipalName", "LicenseSKU", "UsageLocation", "AssignmentState", "Notes")
+    }
+    $OptionalMatrixSchemas = @{
+        "MTX-TEAMS.csv"             = @("TeamID", "DisplayName", "GroupMailNickname", "PrimarySMTP", "OwnerUPN", "Visibility", "Enabled")
+        "MTX-CHANNELS.csv"          = @("ChannelID", "TeamID", "TeamDisplayName", "ChannelName", "ChannelType", "Enabled")
+        "MTX-SITES.csv"             = @("SiteID", "SiteName", "SiteUrl", "SiteType", "OwnerUPN", "Enabled")
+        "MTX-LIBRARIES.csv"         = @("LibraryID", "SiteID", "LibraryName", "LibraryType", "OwnerUPN", "Enabled")
+        "MTX-PROTECTED-OBJECTS.csv" = @("ProtectedObjectID", "UserPrincipalName", "DisplayName", "Alias", "ObjectId", "RoleTitle", "ProtectionReason", "MutationPolicy", "Notes")
     }
 
     $MatrixData = @{}
@@ -186,6 +193,19 @@ function Invoke-StaticValidation {
         [void](Test-RequiredColumns -MatrixName $MatrixName -Rows $Rows -RequiredColumns $MatrixSchemas[$MatrixName])
     }
 
+    foreach ($MatrixName in $OptionalMatrixSchemas.Keys) {
+        $MatrixPath = Join-Path $MTXDir $MatrixName
+        if (-not (Test-Path -LiteralPath $MatrixPath)) {
+            Add-ValidationRecord -Status "SKIPPED" -Scope $MatrixName -Message "Optional matrix not present; workload remains unmodeled for LAB validation." -Reference $MatrixPath
+            continue
+        }
+
+        Add-ValidationRecord -Status "VALIDATING" -Scope $MatrixName -Message "Checking optional file and schema." -Reference $MatrixPath
+        $Rows = @(Import-Csv $MatrixPath)
+        $MatrixData[$MatrixName] = $Rows
+        [void](Test-RequiredColumns -MatrixName $MatrixName -Rows $Rows -RequiredColumns $OptionalMatrixSchemas[$MatrixName])
+    }
+
     if (-not ($MatrixData.ContainsKey("MTX-USERS.csv") -and $MatrixData.ContainsKey("MTX-GROUPS.csv") -and $MatrixData.ContainsKey("MTX-MAILBOXES.csv") -and $MatrixData.ContainsKey("MTX-PERMISSIONS.csv"))) {
         Add-ValidationRecord -Status "BLOCKED" -Scope "StaticValidation" -Message "One or more required MTX files are missing; relationship validation skipped." -Reference $MTXDir
         return $MatrixData
@@ -199,14 +219,27 @@ function Invoke-StaticValidation {
     $UserByUPN = @{}
     foreach ($User in $script:Users) {
         $UserByUPN[$User.UserPrincipalName] = $User
-        if ($User.UserPrincipalName -eq "homelab@federicomosqueira0910.onmicrosoft.com") {
-            Add-ValidationRecord -Status "SKIPPED_PROTECTED" -Scope $User.UserID -Message "GLOBAL-Admin UPN appears in MTX user data and is protected from mutation." -Reference "MTX-USERS.csv"
+        $UserProtection = Assert-LabNotProtectedObject -InputObject $User -ObjectType "User" -ObjectName $User.UserPrincipalName -AttemptedAction "Static validation"
+        if ($UserProtection.IsProtected) {
+            Add-ValidationRecord -Status "SKIPPED_PROTECTED" -Scope $User.UserID -Message "Protected AMB identity appears in MTX user data and is protected from mutation: $($User.UserPrincipalName)." -Reference "MTX-USERS.csv"
         }
     }
 
     foreach ($Group in $script:Groups) {
         if (-not [string]::IsNullOrWhiteSpace($Group.OwnerUPN) -and -not $UserByUPN.ContainsKey($Group.OwnerUPN)) {
             Add-ValidationRecord -Status "WARNING" -Scope $Group.GroupID -Message "Group owner UPN does not resolve to MTX-USERS UserPrincipalName: $($Group.OwnerUPN)." -Reference "MTX-GROUPS.csv"
+        }
+    }
+
+    if ($MatrixData.ContainsKey("MTX-LICENSES.csv")) {
+        foreach ($License in @($MatrixData["MTX-LICENSES.csv"])) {
+            if (-not $UserByUPN.ContainsKey($License.UserPrincipalName)) {
+                Add-ValidationRecord -Status "WARNING" -Scope $License.LicenseID -Message "License UserPrincipalName does not resolve to MTX-USERS: $($License.UserPrincipalName)." -Reference "MTX-LICENSES.csv"
+            }
+            $LicenseProtection = Assert-LabNotProtectedObject -InputObject ([PSCustomObject]@{ UserPrincipalName = $License.UserPrincipalName }) -ObjectType "LicensePrincipal" -ObjectName $License.UserPrincipalName -AttemptedAction "Static validation"
+            if ($LicenseProtection.IsProtected) {
+                Add-ValidationRecord -Status "SKIPPED_PROTECTED" -Scope $License.LicenseID -Message "Protected identity license row is load/count only and will not be assigned by LAB runtime: $($License.UserPrincipalName)." -Reference "MTX-LICENSES.csv"
+            }
         }
     }
 
@@ -220,11 +253,37 @@ function Invoke-StaticValidation {
         if ($Permission.Enabled -ne "True") {
             continue
         }
+        $PrincipalProtection = Assert-LabNotProtectedObject -InputObject ([PSCustomObject]@{ UserPrincipalName = $Permission.UserUPN }) -ObjectType "PermissionPrincipal" -ObjectName $Permission.UserUPN -AttemptedAction "Static validation"
+        if ($PrincipalProtection.IsProtected) {
+            Add-ValidationRecord -Status "SKIPPED_PROTECTED" -Scope $Permission.PermissionID -Message "Permission principal is protected and will be skipped by LAB permissions runtime: $($Permission.UserUPN)." -Reference "MTX-PERMISSIONS.csv"
+        }
         if ($Permission.ObjectType -eq "SharedMailbox" -and (Resolve-MailboxMatrixRow $Permission).Count -eq 0) {
             Add-ValidationRecord -Status "WARNING" -Scope $Permission.PermissionID -Message "Shared mailbox permission target cannot be resolved from MTX." -Reference "MTX-PERMISSIONS.csv"
         }
         if ($Permission.ObjectType -in @("M365Group", "Team", "SecurityGroup") -and (Resolve-GroupMatrixRow $Permission).Count -eq 0) {
             Add-ValidationRecord -Status "WARNING" -Scope $Permission.PermissionID -Message "Group permission target cannot be resolved from MTX." -Reference "MTX-PERMISSIONS.csv"
+        }
+    }
+
+    if ($MatrixData.ContainsKey("MTX-TEAMS.csv") -and $MatrixData.ContainsKey("MTX-CHANNELS.csv")) {
+        $EnabledTeams = @($MatrixData["MTX-TEAMS.csv"] | Where-Object { $_.Enabled -eq "True" })
+        foreach ($Channel in @($MatrixData["MTX-CHANNELS.csv"] | Where-Object { $_.Enabled -eq "True" })) {
+            $TeamMatches = @($EnabledTeams | Where-Object {
+                $_.TeamID -eq $Channel.TeamID -or $_.DisplayName -eq $Channel.TeamDisplayName
+            })
+            if ($TeamMatches.Count -eq 0) {
+                Add-ValidationRecord -Status "WARNING" -Scope $Channel.ChannelID -Message "Channel does not resolve to an enabled MTX-TEAMS row." -Reference "MTX-CHANNELS.csv"
+            }
+        }
+    }
+
+    if ($MatrixData.ContainsKey("MTX-SITES.csv") -and $MatrixData.ContainsKey("MTX-LIBRARIES.csv")) {
+        $EnabledSites = @($MatrixData["MTX-SITES.csv"] | Where-Object { $_.Enabled -eq "True" })
+        foreach ($Library in @($MatrixData["MTX-LIBRARIES.csv"] | Where-Object { $_.Enabled -eq "True" })) {
+            $SiteMatches = @($EnabledSites | Where-Object { $_.SiteID -eq $Library.SiteID })
+            if ($SiteMatches.Count -eq 0) {
+                Add-ValidationRecord -Status "WARNING" -Scope $Library.LibraryID -Message "Library does not resolve to an enabled MTX-SITES row." -Reference "MTX-LIBRARIES.csv"
+            }
         }
     }
 
@@ -261,21 +320,16 @@ function Invoke-LiveValidation {
         Connect-ExchangeOnline -Organization $TenantDomain -ShowBanner:$false
     }
 
-    $GlobalAdmin = Get-MgUser -UserId "homelab@federicomosqueira0910.onmicrosoft.com" -Property "id,displayName,userPrincipalName,accountEnabled,proxyAddresses,assignedLicenses" -ErrorAction SilentlyContinue
-    if ($GlobalAdmin) {
-        Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "GLOBAL-Admin" -Message "Protected GLOBAL-Admin still exists and is enabled state '$($GlobalAdmin.AccountEnabled)'." -Reference "Get-MgUser"
-        if ($GlobalAdmin.AccountEnabled -ne $true) {
-            Add-ValidationRecord -Status "FAILED" -Scope "GLOBAL-Admin" -Message "Protected GLOBAL-Admin is not enabled." -Reference "Get-MgUser"
-        }
-        foreach ($Alias in @("global.admin@federicomosqueira.site", "hello@federicomosqueira.site")) {
-            if (@($GlobalAdmin.ProxyAddresses) -match [regex]::Escape($Alias)) {
-                Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "GLOBAL-Admin" -Message "Protected alias remains present: $Alias." -Reference "Get-MgUser"
-            } else {
-                Add-ValidationRecord -Status "WARNING" -Scope "GLOBAL-Admin" -Message "Protected alias was not visible in proxyAddresses: $Alias." -Reference "Get-MgUser"
+    foreach ($ProtectedUPN in $ProtectedSummary.ProtectedUPNs) {
+        $ProtectedUser = Get-MgUser -UserId $ProtectedUPN -Property "id,displayName,userPrincipalName,accountEnabled,proxyAddresses,assignedLicenses" -ErrorAction SilentlyContinue
+        if ($ProtectedUser) {
+            Add-ValidationRecord -Status "VALIDATING_RESULT" -Scope "ProtectedIdentity" -Message "Protected AMB identity exists: $ProtectedUPN; enabled state '$($ProtectedUser.AccountEnabled)'." -Reference "Get-MgUser"
+            if ($ProtectedUser.AccountEnabled -ne $true) {
+                Add-ValidationRecord -Status "FAILED" -Scope "ProtectedIdentity" -Message "Protected AMB identity is not enabled: $ProtectedUPN." -Reference "Get-MgUser"
             }
+        } else {
+            Add-ValidationRecord -Status "FAILED" -Scope "ProtectedIdentity" -Message "Protected AMB identity was not found: $ProtectedUPN." -Reference "Get-MgUser"
         }
-    } else {
-        Add-ValidationRecord -Status "FAILED" -Scope "GLOBAL-Admin" -Message "Protected GLOBAL-Admin was not found." -Reference "Get-MgUser"
     }
 
     foreach ($User in @($MatrixData["MTX-USERS.csv"])) {

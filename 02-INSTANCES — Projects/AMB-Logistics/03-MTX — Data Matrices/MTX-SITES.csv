@@ -1,0 +1,12 @@
+SiteID,SiteName,SiteUrl,SiteType,OwnerUPN,Enabled
+SITE-MGMT,Management Site,https://amblogistics.sharepoint.com/sites/team-mgmt,TeamBacked,jan.vandamme@amblogistics.be,True
+SITE-OPS,Operations Site,https://amblogistics.sharepoint.com/sites/team-ops,TeamBacked,emma.peeters@amblogistics.be,True
+SITE-SAL,Sales Site,https://amblogistics.sharepoint.com/sites/team-sal,TeamBacked,sarah.jacobs@amblogistics.be,True
+SITE-SUP,Support Site,https://amblogistics.sharepoint.com/sites/team-sup,TeamBacked,kevin.claes@amblogistics.be,True
+SITE-FIN,Finance Site,https://amblogistics.sharepoint.com/sites/team-fin,TeamBacked,luc.wouters@amblogistics.be,True
+SITE-IT,IT Site,https://amblogistics.sharepoint.com/sites/team-it,TeamBacked,bram.willems@amblogistics.be,True
+SITE-HR,HR Site,https://amblogistics.sharepoint.com/sites/team-hr,TeamBacked,sophie.maes@amblogistics.be,True
+SITE-WHS,Warehouse Site,https://amblogistics.sharepoint.com/sites/team-whs,TeamBacked,marc.desmet@amblogistics.be,True
+SITE-DSP,Dispatch Site,https://amblogistics.sharepoint.com/sites/team-dsp,TeamBacked,elena.mertens@amblogistics.be,True
+SITE-COORD,Operations Coordination Site,https://amblogistics.sharepoint.com/sites/team-coordination,TeamBacked,emma.peeters@amblogistics.be,True
+SITE-ALL,All Staff Communications,https://amblogistics.sharepoint.com/sites/team-all-staff,TeamBacked,jan.vandamme@amblogistics.be,True

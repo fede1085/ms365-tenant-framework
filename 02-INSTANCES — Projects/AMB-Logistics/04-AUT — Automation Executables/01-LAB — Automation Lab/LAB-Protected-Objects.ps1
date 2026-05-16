@@ -8,20 +8,32 @@ No destructive default behavior
 
 $script:LabProtectedObjectPolicy = [PSCustomObject]@{
     ProtectedUPNs = @(
-        "homelab@federicomosqueira0910.onmicrosoft.com"
+        "admin.jan@amblogistics.be",
+        "admin.bram@amblogistics.be",
+        "breakglass@amblogistics.be"
     )
     ProtectedAliases = @(
-        "global.admin@federicomosqueira.site",
-        "hello@federicomosqueira.site"
+        "admin.jan",
+        "admin.bram",
+        "breakglass",
+        "admin.jan@amblogistics.be",
+        "admin.bram@amblogistics.be",
+        "breakglass@amblogistics.be"
     )
     ProtectedDisplayNames = @(
-        "GLOBAL-Admin"
+        "Admin Jan",
+        "Admin Bram",
+        "Emergency BreakGlass"
     )
     ProtectedObjectIds = @(
-        "<UNKNOWN_OBJECT_ID_GLOBAL_ADMIN>"
+        "<UNKNOWN_OBJECT_ID_ADMIN_JAN>",
+        "<UNKNOWN_OBJECT_ID_ADMIN_BRAM>",
+        "<UNKNOWN_OBJECT_ID_BREAKGLASS>"
     )
     ProtectedRoles = @(
-        "Global Administrator"
+        "Global Administrator",
+        "IT Administrator / Teams Administrator",
+        "Emergency Access / Global Administrator"
     )
     CurrentConnectedUserUPN = ""
 }
@@ -36,6 +48,15 @@ function Normalize-LabIdentityValue {
     }
 
     return ([string]$Value).Trim().ToLowerInvariant()
+}
+
+function Test-LabUnknownObjectIdValue {
+    Param(
+        [AllowNull()][Object]$Value
+    )
+
+    $NormalizedValue = Normalize-LabIdentityValue $Value
+    return $NormalizedValue -like "<unknown_object_id_*>" -or $NormalizedValue -eq "unknown"
 }
 
 function Test-LabValueInProtectedSet {
@@ -55,7 +76,7 @@ function Test-LabValueInProtectedSet {
             continue
         }
 
-        if ($NormalizedProtectedValue -eq (Normalize-LabIdentityValue "<UNKNOWN_OBJECT_ID_GLOBAL_ADMIN>")) {
+        if (Test-LabUnknownObjectIdValue $NormalizedProtectedValue) {
             continue
         }
 
@@ -84,7 +105,7 @@ function Add-LabProtectedObjectId {
         return $false
     }
 
-    if ($NormalizedObjectId -eq (Normalize-LabIdentityValue "<UNKNOWN_OBJECT_ID_GLOBAL_ADMIN>")) {
+    if (Test-LabUnknownObjectIdValue $NormalizedObjectId) {
         return $false
     }
 
@@ -298,25 +319,39 @@ function Assert-LabNotProtectedObject {
 }
 
 function Confirm-LabProtectedBaseline {
-    $RequiredUPN = "homelab@federicomosqueira0910.onmicrosoft.com"
-    $RequiredAliases = @("global.admin@federicomosqueira.site", "hello@federicomosqueira.site")
-    $RequiredDisplayName = "GLOBAL-Admin"
-    $RequiredRole = "Global Administrator"
+    $RequiredUPNs = @(
+        "admin.jan@amblogistics.be",
+        "admin.bram@amblogistics.be",
+        "breakglass@amblogistics.be"
+    )
+    $RequiredAliases = @("admin.jan", "admin.bram", "breakglass")
+    $RequiredDisplayNames = @("Admin Jan", "Admin Bram", "Emergency BreakGlass")
+    $RequiredRoles = @(
+        "Global Administrator",
+        "IT Administrator / Teams Administrator",
+        "Emergency Access / Global Administrator"
+    )
 
     $Problems = New-Object System.Collections.Generic.List[String]
-    if (-not (Test-LabValueInProtectedSet -Value $RequiredUPN -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedUPNs)) {
-        $Problems.Add("Missing protected UPN: $RequiredUPN")
+    foreach ($RequiredUPN in $RequiredUPNs) {
+        if (-not (Test-LabValueInProtectedSet -Value $RequiredUPN -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedUPNs)) {
+            $Problems.Add("Missing protected UPN: $RequiredUPN")
+        }
     }
     foreach ($Alias in $RequiredAliases) {
         if (-not (Test-LabValueInProtectedSet -Value $Alias -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedAliases)) {
             $Problems.Add("Missing protected alias: $Alias")
         }
     }
-    if (-not (Test-LabValueInProtectedSet -Value $RequiredDisplayName -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedDisplayNames)) {
-        $Problems.Add("Missing protected display name: $RequiredDisplayName")
+    foreach ($DisplayName in $RequiredDisplayNames) {
+        if (-not (Test-LabValueInProtectedSet -Value $DisplayName -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedDisplayNames)) {
+            $Problems.Add("Missing protected display name: $DisplayName")
+        }
     }
-    if (-not (Test-LabValueInProtectedSet -Value $RequiredRole -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedRoles)) {
-        $Problems.Add("Missing protected role: $RequiredRole")
+    foreach ($Role in $RequiredRoles) {
+        if (-not (Test-LabValueInProtectedSet -Value $Role -ProtectedValues $script:LabProtectedObjectPolicy.ProtectedRoles)) {
+            $Problems.Add("Missing protected role: $Role")
+        }
     }
 
     if ($Problems.Count -gt 0) {
@@ -335,8 +370,17 @@ function Get-LabProtectedObjectSummary {
         ProtectedRoles            = $script:LabProtectedObjectPolicy.ProtectedRoles
         CurrentConnectedUserUPN   = $script:LabProtectedObjectPolicy.CurrentConnectedUserUPN
         ObjectIdResolved          = @($script:LabProtectedObjectPolicy.ProtectedObjectIds | Where-Object {
-            (Normalize-LabIdentityValue $_) -ne (Normalize-LabIdentityValue "<UNKNOWN_OBJECT_ID_GLOBAL_ADMIN>")
+            -not (Test-LabUnknownObjectIdValue $_)
         }).Count -gt 0
         Boundary                  = "Tenant-local controlled runtime; Production-ready guarded execution; Protected-object enforced; No license assignment; No destructive default behavior"
+    }
+}
+
+function Get-TenantProtectedObjects {
+    return @{
+        UserPrincipalNames = $script:LabProtectedObjectPolicy.ProtectedUPNs
+        DisplayNames       = $script:LabProtectedObjectPolicy.ProtectedDisplayNames
+        Aliases            = $script:LabProtectedObjectPolicy.ProtectedAliases
+        RoleTitles         = $script:LabProtectedObjectPolicy.ProtectedRoles
     }
 }

@@ -1,0 +1,16 @@
+ChannelID,TeamID,TeamDisplayName,ChannelName,ChannelType,Enabled
+CH-MGMT-001,TEAM-MGMT,TEAM-MGMT,Strategy,Standard,True
+CH-MGMT-002,TEAM-MGMT,TEAM-MGMT,Finance-Review,Standard,True
+CH-OPS-001,TEAM-OPS,TEAM-OPS,International,Standard,True
+CH-OPS-002,TEAM-OPS,TEAM-OPS,Local-BE,Standard,True
+CH-SAL-001,TEAM-SAL,TEAM-SAL,Sales-Pipeline,Standard,True
+CH-SUP-001,TEAM-SUP,TEAM-SUP,Client-Issues,Standard,True
+CH-FIN-001,TEAM-FIN,TEAM-FIN,Invoicing,Standard,True
+CH-IT-001,TEAM-IT,TEAM-IT,Service-Desk,Standard,True
+CH-HR-001,TEAM-HR,TEAM-HR,People-Ops,Standard,True
+CH-WHS-001,TEAM-WHS,TEAM-WHS,Inventory,Standard,True
+CH-WHS-002,TEAM-WHS,TEAM-WHS,Stock-HQ,Standard,True
+CH-DSP-001,TEAM-DSP,TEAM-DSP,Drivers,Standard,True
+CH-DSP-002,TEAM-DSP,TEAM-DSP,Route-Planning,Standard,True
+CH-COORD-001,TEAM-COORDINATION,TEAM-COORDINATION,Operations-Coordination,Standard,True
+CH-ALL-001,TEAM-ALL-STAFF,TEAM-ALL-STAFF,Announcements,Standard,True
