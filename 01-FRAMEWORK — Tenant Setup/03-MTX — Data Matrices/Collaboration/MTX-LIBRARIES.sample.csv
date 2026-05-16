@@ -1,0 +1,4 @@
+LibraryID,SiteID,LibraryName,LibraryType,OwnerUPN,Enabled
+LIB-OPS-DOCS,SITE-OPS,Operations Documents,DocumentLibrary,ops.lead@example.com,True
+LIB-SUP-KB,SITE-SUP,Support Knowledge Base,DocumentLibrary,support.agent@example.com,True
+LIB-HQ-POLICIES,SITE-HQ,Company Policies,DocumentLibrary,ops.lead@example.com,True

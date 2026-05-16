@@ -1,0 +1,4 @@
+DisplayName,Alias,TargetAddress,Department,OwnerUPN
+Operations Shared Mailbox,operations,operations@example.com,Operations,ops.lead@example.com
+Support Shared Mailbox,support,support@example.com,Support,support.agent@example.com
+Finance Shared Mailbox,finance,finance@example.com,Finance,finance.analyst@example.com

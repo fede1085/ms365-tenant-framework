@@ -46,7 +46,7 @@ MTX-USERS.csv
 
 | Column Name | Required | Purpose |
 | --- | --- | --- |
-| UserID | Yes | Internal unique ID |
+| UserID | Optional | Legacy/internal reference ID. Not required by current AUT runtime scripts. |
 | DisplayName | Yes | Visible Microsoft name |
 | FirstName | Yes | Given name |
 | LastName | Yes | Surname |
@@ -78,7 +78,7 @@ MTX-USERS.csv
 # 5. Example Rows
 
 ```
-UserID,DisplayName,FirstName,LastName,UserPrincipalName,MailNickname,Department,JobTitle,UsageLocation,LicenseSKU,PasswordProfile,AccountEnabled
+DisplayName,FirstName,LastName,UserPrincipalName,MailNickname,Department,JobTitle,UsageLocation,LicenseSKU,PasswordProfile,AccountEnabled
 U001,ROLE-GLOBAL-ADMIN,Global,Admin,admin@<tenant-domain>,admin,Executive,Global Administrator,BE,BUSINESS_BASIC,<GENERATED_SECURE_PASSWORD>,True
 U002,ROLE-IT-ADMIN,IT,Admin,it.admin@<tenant-domain>,it.admin,Admin,License Administrator,BE,,<GENERATED_SECURE_PASSWORD>,True
 U003,ROLE-FIN-ANALYST,Finance,Analyst,user@<domain>,user.finance,Finance,Finance Analyst,BE,BUSINESS_BASIC,<GENERATED_SECURE_PASSWORD>,True
