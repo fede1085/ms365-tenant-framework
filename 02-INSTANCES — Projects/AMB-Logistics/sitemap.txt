@@ -1,0 +1,42 @@
+02-INSTANCES — Projects
+│
+├── .codex
+│
+└── AMB-Logistics
+    │
+    ├── 01-DISCOVERY — Discovery
+    │   └── DSC-AMB-001 — Discovery Notes.md
+    │
+    ├── 02-BLP — Blueprint Templates
+    │   ├── BLP-COL-001 — Collaboration & Teams Blueprint.md
+    │   ├── BLP-GOV-001 — Tenant Governance Blueprint.md
+    │   ├── BLP-SEC-001 — Security & Identity Blueprint.md
+    │   ├── BLP-WFL-001 — Operational Workflow Blueprint.md
+    │   ├── PRJ-BLUEPRINT-MASTER-DOC.md
+    │   └── VAL-REP-001 — Blueprint Validation Report.md
+    │
+    ├── 03-MTX — Data Matrices
+    │   ├── MTX-CHANNELS.csv
+    │   ├── MTX-GROUPS.csv
+    │   ├── MTX-LIBRARIES.csv
+    │   ├── MTX-LICENSES.csv
+    │   ├── MTX-MAILBOXES.csv
+    │   ├── MTX-PERMISSIONS.csv
+    │   ├── MTX-PROTECTED-OBJECTS.csv
+    │   ├── MTX-SITES.csv
+    │   ├── MTX-TEAMS.csv
+    │   └── MTX-USERS.csv
+    │
+    └── 04-AUT — Automation Executables
+        │
+        └── 01-LAB — Automation Lab
+            ├── LAB-Apply-Permissions.ps1
+            ├── LAB-Create-Groups.ps1
+            ├── LAB-Create-Mailboxes.ps1
+            ├── LAB-Create-Users.ps1
+            ├── LAB-Deploy-Tenant.ps1
+            ├── LAB-HARDENING-REPORT.md
+            ├── LAB-Protected-Objects.ps1
+            ├── LAB-README.md
+            ├── LAB-Run-Project.ps1
+            └── LAB-Validation-Report.ps1

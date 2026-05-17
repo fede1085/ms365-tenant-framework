@@ -1,4 +1,0 @@
-"TeamName","TeamType","Department","Owners","GuestAllowed","ReviewCadence","ArchivePolicy","RelatedSite"
-"TEAM-OPS","Departmental","OPS","role:operations.lead;role:it.backup","No","Quarterly","Archive when department inactive or replaced","SITE-OPS"
-"TEAM-COORDINATION","Transversal","OPS;WHS;DSP","role:operations.manager;role:dispatch.lead","No","Quarterly","Archive when coordination process ends","SITE-COORDINATION"
-"TEAM-CLIENT-PROJECT","Project","CONSULTING","role:project.owner;role:consulting.backup","Conditional","Monthly","Archive after project closure","SITE-CLIENT-PROJECT"

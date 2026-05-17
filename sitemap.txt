@@ -1,0 +1,215 @@
+MS365-TENANT — Framework Setup
+│
+├── .agents
+│   ├── rules
+│   │   ├── RULE-001 — Framework Interpretation Model.md
+│   │   ├── RULE-002 — Agent Blueprint.md
+│   │   ├── RULE-003 — Execution Model.md
+│   │   ├── RULE-004 — Security Baseline.md
+│   │   └── RULE-005 — Naming Convention.md
+│   │
+│   └── workflows
+│       ├── WKFW-001 — Interactive Identity Blueprint.md
+│       └── WKFW-002 — Blueprint Full Project Generator.md
+│
+├── .codex
+│
+├── 00-CANONICAL — Structured Control Layer
+│   ├── 01-SCHEMAS
+│   │   ├── CAN-SCH-001 — Semantic Metadata Schema.md
+│   │   ├── CAN-SCH-001.yaml
+│   │   ├── CAN-SCH-002 — Layer Ontology Schema.md
+│   │   ├── CAN-SCH-002.yaml
+│   │   ├── SYS-AUTHORITY.schema.yaml
+│   │   ├── SYS-META.schema.yaml
+│   │   └── SYS-ROUTING.schema.yaml
+│   │
+│   ├── 02-RULES
+│   │   ├── CAN-RUL-001 — Authority Inheritance Rules.md
+│   │   ├── CAN-RUL-002 — Canonical Naming Enforcement.md
+│   │   ├── CAN-STATE-001 — Execution State Model.md
+│   │   ├── CAN-STATE-001.yaml
+│   │   ├── SYS-AUTHORITY.rules.yaml
+│   │   ├── SYS-BOUNDARY.rules.yaml
+│   │   └── SYS-ROUTING.rules.yaml
+│   │
+│   ├── 03-COMPILED
+│   │   ├── CAN-CMP-001 — Canonical Master Index.md
+│   │   ├── SYS-ENT-002.yaml
+│   │   ├── SYS-GOV-001.yaml
+│   │   ├── SYS-GOV-002.yaml
+│   │   ├── SYS-MAP-000.yaml
+│   │   ├── SYS-MAP-001.yaml
+│   │   ├── SYS-MAP-002.yaml
+│   │   ├── SYS-MAP-004.yaml
+│   │   ├── SYS-MAP-007.yaml
+│   │   ├── SYS-STD-001.yaml
+│   │   ├── SYS-STD-002.yaml
+│   │   ├── SYS-STD-003.yaml
+│   │   ├── SYS-STD-004.yaml
+│   │   └── SYS-TPL-001.yaml
+│   │
+│   ├── 04-GRAPHS
+│   │   ├── CAN-GRP-001 — Semantic Dependency Graph.md
+│   │   ├── CAN-GRP-002 — Framework Dependency Engine Model.md
+│   │   ├── SYS-AUTHORITY.graph.yaml
+│   │   ├── SYS-DEPENDENCY.graph.yaml
+│   │   └── SYS-ROUTING.graph.yaml
+│   │
+│   ├── 05-ROUTING
+│   │   ├── CAN-RTE-001 — Context Loading Router.md
+│   │   ├── SYS-CONTEXT.router.yaml
+│   │   └── SYS-LOAD-PRIORITY.router.yaml
+│   │
+│   └── 06-AUDITS
+│       └── CAN-AUD-005 — Stabilization Hardening Report.md
+│
+├── 00-SYSTEM — Semantic Control Layer
+│   ├── SYS-AGT-001 — Agent Map.md
+│   ├── SYS-ENT-001 — Entity Map.md
+│   ├── SYS-ENT-002 — Workload Entity Extension Map.md
+│   ├── SYS-FRWK-999 — Structure Guide.txt
+│   ├── SYS-GOV-001 — Read First.md
+│   ├── SYS-GOV-002 — Context Loading Priority.md
+│   ├── SYS-GOV-003 — Authority Layer Clarification.md
+│   ├── SYS-MAP-000 — Framework Ontology & Layer Model.md
+│   ├── SYS-MAP-001 — Master Index.md
+│   ├── SYS-MAP-002 — Relations Map.md
+│   ├── SYS-MAP-003 — Semantic Sitemap.md
+│   ├── SYS-MAP-004 — Authority Map.md
+│   ├── SYS-MAP-005 — Semantic Map.md
+│   ├── SYS-MAP-006 — Workflow Map.md
+│   ├── SYS-MAP-007 — Extension Dependency Map.md
+│   ├── SYS-STD-001 — Canonical Vocabulary.md
+│   ├── SYS-STD-002 — Naming System.md
+│   ├── SYS-STD-003 — Maturity Level Vocabulary.md
+│   ├── SYS-STD-004 — Sector Template Vocabulary.md
+│   └── SYS-TPL-001 — Metadata Template.md
+│
+├── 01-FRAMEWORK — Tenant Setup
+│   ├── 01-ARC — Architecture
+│   │   ├── Collaboration
+│   │   │   ├── ARC-OPS-001 — Collaboration Operating Model.md
+│   │   │   ├── ARC-OPS-002 — Teams Channel Strategy.md
+│   │   │   ├── ARC-OPS-003 — Mailbox Workflow Strategy.md
+│   │   │   ├── ARC-OPS-004 — Teams Governance Model.md
+│   │   │   └── ARC-OPS-005 — SharePoint Information Architecture Model.md
+│   │   │
+│   │   ├── Compliance
+│   │   │   ├── ARC-COMP-001 — Audit & Retention Strategy.md
+│   │   │   ├── ARC-COMP-002 — Sensitive Data & Information Classification Model.md
+│   │   │   └── ARC-COMP-003 — Compliance Monitoring & Review Model.md
+│   │   │
+│   │   ├── Governance
+│   │   │   ├── ARC-GOV-001 — Identity Lifecycle Governance Model.md
+│   │   │   ├── ARC-GOV-002 — Access Governance & Ownership Model.md
+│   │   │   ├── ARC-GOV-003 — Naming & Classification Governance Model.md
+│   │   │   └── ARC-GOV-004 — Access Review Governance Model.md
+│   │   │
+│   │   ├── Security
+│   │   │   ├── ARC-SEC-001 — Enterprise Identity Security Model.md
+│   │   │   ├── ARC-SEC-002 — Conditional Access Strategy.md
+│   │   │   ├── ARC-SEC-003 — MFA Policy Model.md
+│   │   │   └── ARC-SEC-004 — Admin Tiering Model.md
+│   │   │
+│   │   ├── ARC-DES-001 — Architecture Development Layer.md
+│   │   ├── ARC-GOV-013 — Category Tag Governance Standard.md
+│   │   ├── ARC-GOV-016 — User Lifecycle Model.md
+│   │   ├── ARC-STD-007 — Naming Convention Standard.md
+│   │   ├── ARC-STD-007a — Naming Convention Standard Guide.md
+│   │   ├── ARC-STD-014 — Security Baseline.md
+│   │   ├── ARC-STD-017 — Documentation Framework.md
+│   │   ├── ARC-STR-002 — Tenant Blueprint Factory Strategy.md
+│   │   ├── ARC-SYS-000 — Architecture Control Map.md
+│   │   └── LEGACY-ARC-STD-007b — Naming Convention Emoji Guide.md
+│   │
+│   ├── 02-BLP — Blueprint Templates
+│   │   ├── Collaboration
+│   │   │   ├── BLP-OPS-001 — Teams Channels Blueprint.md
+│   │   │   ├── BLP-OPS-002 — Outlook Workflow Blueprint.md
+│   │   │   ├── BLP-OPS-003 — Department Handoff Blueprint.md
+│   │   │   ├── BLP-OPS-004 — Teams Governance Blueprint.md
+│   │   │   └── BLP-OPS-005 — SharePoint Sites Blueprint.md
+│   │   │
+│   │   ├── Compliance
+│   │   │   ├── BLP-COMP-001 — Audit & Retention Blueprint.md
+│   │   │   ├── BLP-COMP-002 — Information Classification Blueprint.md
+│   │   │   └── BLP-COMP-003 — Compliance Review Blueprint.md
+│   │   │
+│   │   ├── Governance
+│   │   │   ├── BLP-GOV-001 — Identity Lifecycle Blueprint.md
+│   │   │   ├── BLP-GOV-002 — Ownership & Approval Blueprint.md
+│   │   │   ├── BLP-GOV-003 — Naming & Classification Blueprint.md
+│   │   │   └── BLP-GOV-004 — Access Reviews Blueprint.md
+│   │   │
+│   │   ├── Security
+│   │   │   ├── BLP-SEC-001 — Conditional Access Blueprint.md
+│   │   │   ├── BLP-SEC-002 — MFA Enforcement & Assignment Blueprint.md
+│   │   │   ├── BLP-SEC-003 — MFA Assignment Matrix.md
+│   │   │   ├── BLP-SEC-004 — Device Compliance Model.md
+│   │   │   └── BLP-SEC-005 — Access Control Policies.md
+│   │   │
+│   │   ├── BLP-SYS-000 — Blueprint Control Layer.md
+│   │   ├── BLP-SYS-001 — Project Blueprint Master Document Model.md
+│   │   ├── BLP-TMP-002 — Department Matrix Template.md
+│   │   ├── BLP-TMP-003 — User Matrix Template.md
+│   │   ├── BLP-TMP-004 — Group Matrix Template.md
+│   │   ├── BLP-TMP-005 — Shared Mailbox Matrix Template.md
+│   │   ├── BLP-TMP-006 — Permission Matrix Template.md
+│   │   └── BLP-TMP-015 — License Matrix Template.md
+│   │
+│   ├── 03-MTX — Data Matrices
+│   │   ├── Collaboration
+│   │   │   ├── MTX-CHANNELS.sample.csv
+│   │   │   ├── MTX-LIBRARIES.sample.csv
+│   │   │   ├── MTX-SITES.sample.csv
+│   │   │   ├── MTX-TEAMS.sample.csv
+│   │   │   └── README-COL.md
+│   │   │
+│   │   ├── Identity
+│   │   │   ├── MTX-GROUPS.sample.csv
+│   │   │   ├── MTX-LICENSES.sample.csv
+│   │   │   ├── MTX-MAILBOXES.sample.csv
+│   │   │   ├── MTX-PERMISSIONS.sample.csv
+│   │   │   ├── MTX-USERS.sample.csv
+│   │   │   └── README-ID.md
+│   │   │
+│   │   ├── Security
+│   │   │   ├── MTX-SEC-004 — Device Compliance Matrix.csv
+│   │   │   └── README-SEC.md
+│   │   │
+│   │   └── README.md
+│   │
+│   ├── 04-AUT — Automation Executables
+│   │   ├── scripts
+│   │   │   ├── AUT-Protected-Objects.ps1
+│   │   │   ├── Deploy-Tenant.ps1
+│   │   │   └── Run-Project.ps1
+│   │   │
+│   │   ├── AUT-DOC-008 — Automation Script Blueprint.md
+│   │   ├── AUT-DOC-009 — Users CSV Schema.md
+│   │   ├── AUT-DOC-010 — Permissions CSV Schema.md
+│   │   ├── AUT-DOC-011 — Full Tenant Build Script.md
+│   │   ├── AUT-DOC-012 — Validation & Audit Toolkit.md
+│   │   ├── AUT-OPS-001 — Runtime Propagation Strategy.md
+│   │   ├── AUT-OPS-002 — Runtime Normalization Pipeline.md
+│   │   ├── AUT-RUL-001 — Idempotency & Retry Rule.md
+│   │   ├── AUT-SCH-001 — Runtime Matrix Contract.md
+│   │   ├── AUT-SYS-000 — Automation Control Layer.md
+│   │   └── AUT-SYS-001 — Execution State Model.md
+│   │
+│   └── 00-START — Execution Workflow.md
+│
+├── 02-INSTANCES — Projects
+│
+├── 099-DOCS — Research Files
+│
+├── ___00-START — Initialization Prompt FULL.ignore.md
+├── .gitignore
+├── 00-START — Initialization Prompt.md
+├── 01-GENERATION — Blueprint Generation Prompt.md
+├── 02-VALIDATION — Blueprint Validation Prompt.md
+├── 03-MATRIX — Matrix Generation Prompt.md
+├── 04-DEPLOYMENT — Automation & Execution Prompt.md
+├── README.md
+└── sitemap.outdated.txt

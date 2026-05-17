@@ -1,4 +1,0 @@
-"SiteName","RelatedTeam","SiteOwner","Libraries","SensitivityLevel","ExternalSharing","ReviewCadence"
-"SITE-OPS","TEAM-OPS","role:operations.lead","LIB-OPERATIONS;LIB-PROCEDURES;LIB-ARCHIVE","INTERNAL","OrganizationOnly","Quarterly"
-"SITE-COORDINATION","TEAM-COORDINATION","role:operations.manager","LIB-COORDINATION;LIB-INCIDENTS;LIB-ARCHIVE","INTERNAL","OrganizationOnly","Quarterly"
-"SITE-CLIENT-PROJECT","TEAM-CLIENT-PROJECT","role:project.owner","LIB-DELIVERABLES;LIB-CLIENT-DOCS;LIB-ARCHIVE","CONFIDENTIAL","ApprovedGuestsOnly","Monthly"
